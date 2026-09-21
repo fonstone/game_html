@@ -79,10 +79,11 @@ body{
 /* ---------- 布局 ---------- */
 .app{position:relative;z-index:5;max-width:1320px;margin:0 auto;padding:40px 34px 64px;min-height:100vh}
 header.hd{text-align:center;margin-bottom:22px;position:relative}
-.hd h1{font-size:48px;letter-spacing:.36em;text-indent:.36em;font-weight:400;color:var(--ink);
+.hd h1{font-size:54px;letter-spacing:.36em;text-indent:.36em;font-weight:600;color:var(--ink);
+  -webkit-text-stroke:.45px currentColor;
   text-shadow:0 2px 0 rgba(255,255,255,.65),0 6px 18px rgba(51,64,58,.10)}
 .hd h1 em{font-style:normal;color:var(--red)}
-.hd .sub{margin-top:10px;font-size:15px;letter-spacing:.28em;text-indent:.28em;color:var(--ink2)}
+.hd .sub{margin-top:11px;font-size:16.5px;letter-spacing:.28em;text-indent:.28em;color:var(--ink2)}
 .hd .rule{width:240px;height:1px;margin:12px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);position:relative}
 .hd .rule::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--gold);transform:rotate(45deg)}
 
@@ -121,12 +122,13 @@ header.hd{text-align:center;margin-bottom:22px;position:relative}
 .wbStat{flex:1;padding:10px 4px;position:relative}
 .wbStat+.wbStat::before{content:"";position:absolute;left:0;top:14%;height:72%;width:1px;
   background:linear-gradient(180deg,transparent,rgba(195,154,43,.6),transparent)}
-.wbStat b{display:block;font-size:38px;line-height:1.2;font-weight:400;color:var(--jade)}
-.wbStat span{font-size:13px;letter-spacing:.2em;color:var(--ink3)}
-.wbTip{margin-top:12px;font-size:13.5px;color:var(--ink3);letter-spacing:.1em}
-.ptitle{font-size:18px;letter-spacing:.2em;color:var(--jade);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.wbStat b{display:block;font-size:44px;line-height:1.2;font-weight:600;color:var(--jade);-webkit-text-stroke:.5px currentColor}
+.wbStat span{font-size:13.5px;letter-spacing:.2em;color:var(--ink3)}
+.wbTip{margin-top:14px;font-size:14px;color:var(--ink3);letter-spacing:.1em}
+.ptitle{font-size:21px;letter-spacing:.2em;color:var(--jade);margin-bottom:16px;display:flex;align-items:center;gap:10px;
+  font-weight:600;-webkit-text-stroke:.35px currentColor}
 .ptitle::before{content:"";width:6px;height:18px;background:var(--red);border-radius:2px}
-.ptitle small{font-size:12.5px;letter-spacing:.08em;color:var(--ink3);font-weight:400}
+.ptitle small{font-size:13.5px;letter-spacing:.08em;color:var(--ink3);font-weight:400}
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .grid3{display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -202,25 +204,25 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 .btn.ghost{background:rgba(255,255,255,.6);border-color:rgba(47,91,77,.3);color:var(--jade)}
 .btn.ghost:hover{background:rgba(255,255,255,.9);border-color:var(--gold)}
 .btn.sm{font-size:14px;padding:8px 17px;letter-spacing:.1em;border-radius:8px}
-.btn.big{font-size:22px;padding:19px 54px;letter-spacing:.3em}
+.btn.big{font-size:25px;padding:20px 58px;letter-spacing:.3em;font-weight:600;-webkit-text-stroke:.3px currentColor}
 
 /* 小组卡片 */
 .teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px}
 .tcard{border:1px solid rgba(195,154,43,.4);border-radius:12px;padding:14px;background:rgba(255,255,255,.62);position:relative;transition:.2s}
 .tcard:hover{border-color:var(--gold);box-shadow:var(--shadow-s)}
-.tcard .idx{font-size:12px;letter-spacing:.2em;color:var(--gold);margin-bottom:6px}
-.tcard input{font-size:16.5px;text-align:center;padding:8px 10px}
+.tcard .idx{font-size:13px;letter-spacing:.2em;color:var(--gold);margin-bottom:6px}
+.tcard input{font-size:18px;text-align:center;padding:9px 10px;font-weight:600;-webkit-text-stroke:.3px currentColor}
 .tcard .del{position:absolute;right:-6px;top:-6px;width:22px;height:22px;border-radius:50%;border:0;
   background:var(--red);color:#fff;font-size:13px;line-height:20px;cursor:pointer;opacity:0;transition:.2s}
 .tcard:hover .del{opacity:1}
-.tcard .st{margin-top:8px;font-size:12.5px;color:var(--ink3);letter-spacing:.08em;min-height:15px}
+.tcard .st{margin-top:9px;font-size:13.5px;color:var(--ink3);letter-spacing:.08em;min-height:15px}
 .tcard.done{background:rgba(47,91,77,.09);border-color:var(--jade3)}
 .tcard.done .st{color:var(--jade)}
 
 /* ---------- 游戏页 ---------- */
 .gameTop{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:16px}
-.gTeam{flex:1;text-align:left;font-size:23px;letter-spacing:.2em;color:var(--jade)}
-.gTeam small{display:block;font-size:12.5px;letter-spacing:.14em;color:var(--ink3);margin-top:4px}
+.gTeam{flex:1;text-align:left;font-size:26px;letter-spacing:.2em;color:var(--jade);font-weight:600;-webkit-text-stroke:.35px currentColor}
+.gTeam small{display:block;font-size:13.5px;letter-spacing:.14em;color:var(--ink3);margin-top:4px}
 .ringWrap{position:relative;width:152px;height:152px;flex:none}
 .ring{width:152px;height:152px;transform:rotate(-90deg)}
 .ring-bg{fill:none;stroke:rgba(47,91,77,.16);stroke-width:9}
@@ -228,14 +230,14 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 .ring-fg.warn{stroke:var(--gold)}
 .ring-fg.danger{stroke:var(--red)}
 .ringTxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ringNum{font-size:46px;font-weight:400;letter-spacing:.02em;color:var(--ink);line-height:1}
+.ringNum{font-size:54px;font-weight:600;-webkit-text-stroke:.55px currentColor;letter-spacing:.02em;color:var(--ink);line-height:1}
 .ringLbl{font-size:12px;letter-spacing:.24em;color:var(--ink3);margin-top:5px}
 .ringWrap.danger .ringNum{color:var(--red);animation:pulse .6s ease-in-out infinite alternate}
 @keyframes pulse{from{transform:scale(1)}to{transform:scale(1.07)}}
 .stats{flex:1;display:flex;gap:10px;justify-content:flex-end}
 .stat{min-width:96px;text-align:center;padding:10px 14px;border-radius:11px;
   background:rgba(255,255,255,.66);border:1px solid rgba(195,154,43,.35)}
-.stat b{display:block;font-size:31px;line-height:1.15;font-weight:400;color:var(--jade)}
+.stat b{display:block;font-size:35px;line-height:1.15;font-weight:600;color:var(--jade);-webkit-text-stroke:.4px currentColor}
 .stat span{font-size:12.5px;letter-spacing:.16em;color:var(--ink3)}
 .stat.red b{color:var(--red)}
 .stat.gold b{color:var(--gold)}
@@ -253,7 +255,8 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 .wordCard .c3{left:-10px;bottom:-10px;transform:scaleY(-1)}
 .wordCard .c4{right:-10px;bottom:-10px;transform:scale(-1)}
 .wIdx{font-size:13.5px;letter-spacing:.3em;color:var(--ink3);margin-bottom:16px}
-.wWord{font-size:min(11.5vw,104px);line-height:1.2;font-weight:400;letter-spacing:.1em;color:#2f3a34;
+.wWord{font-size:min(12vw,116px);line-height:1.2;font-weight:600;letter-spacing:.1em;color:#2f3a34;
+  -webkit-text-stroke:.7px currentColor;
   text-shadow:0 2px 0 rgba(255,255,255,.75),0 12px 26px rgba(51,64,58,.13);word-break:break-all}
 .wWord.flip,.w.flip{animation:flipIn .34s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes flipIn{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
@@ -263,7 +266,7 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
 .act{padding:22px 12px;border-radius:14px;border:1px solid;cursor:pointer;transition:.18s;
   text-align:center;box-shadow:var(--shadow-s);position:relative;overflow:hidden}
-.act .k{font-size:28px;letter-spacing:.24em;font-weight:400}
+.act .k{font-size:31px;letter-spacing:.24em;font-weight:600;-webkit-text-stroke:.4px currentColor}
 .act .s{font-size:13px;letter-spacing:.16em;opacity:.78;margin-top:6px}
 .act .key{position:absolute;right:10px;top:8px;font-size:11.5px;opacity:.5;letter-spacing:.05em}
 .act.ok{background:linear-gradient(180deg,#4d8a75,var(--jade));color:#f6fbf6;border-color:#22473c}
@@ -289,8 +292,8 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .ovCard{background:linear-gradient(180deg,#fdfaf3,#f5eddd);border:1px solid var(--gold);
   border-radius:18px;padding:38px 46px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3);min-width:320px}
-.ovBig{font-size:124px;line-height:1;color:var(--red);font-weight:400;letter-spacing:.05em}
-.ovCard h3{font-size:25px;letter-spacing:.24em;color:var(--jade);margin-bottom:6px}
+.ovBig{font-size:140px;line-height:1;color:var(--red);font-weight:600;letter-spacing:.05em;-webkit-text-stroke:1px currentColor}
+.ovCard h3{font-size:28px;font-weight:600;-webkit-text-stroke:.4px currentColor;letter-spacing:.24em;color:var(--jade);margin-bottom:6px}
 .ovCard p{font-size:14.5px;color:var(--ink2);letter-spacing:.12em;margin-top:8px;line-height:1.9}
 
 /* 成绩单 */
@@ -298,8 +301,8 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 @media(max-width:760px){.scoreRow{grid-template-columns:repeat(2,1fr)}}
 .sc{text-align:center;padding:20px 12px;border-radius:14px;background:rgba(255,255,255,.7);
   border:1px solid rgba(195,154,43,.4)}
-.sc b{display:block;font-size:48px;line-height:1.15;font-weight:400}
-.sc span{font-size:13px;letter-spacing:.2em;color:var(--ink3)}
+.sc b{display:block;font-size:56px;line-height:1.15;font-weight:600;-webkit-text-stroke:.55px currentColor}
+.sc span{font-size:14px;letter-spacing:.2em;color:var(--ink3)}
 .sc.jade b{color:var(--jade)} .sc.gold b{color:var(--gold)} .sc.red b{color:var(--red)} .sc.ink b{color:var(--ink2)}
 .hist{max-height:210px;overflow:auto;padding:12px;border-radius:12px;background:rgba(236,224,201,.4);
   border:1px dashed rgba(195,154,43,.5);margin-top:12px}
@@ -311,7 +314,7 @@ textarea{resize:vertical;min-height:150px;line-height:1.9}
 
 /* 龙虎榜 */
 table.board{width:100%;border-collapse:collapse;font-size:15.5px}
-table.board th{font-size:12.5px;letter-spacing:.2em;color:var(--ink3);font-weight:400;padding:10px 8px;
+table.board th{font-size:14px;letter-spacing:.2em;color:var(--ink3);font-weight:400;padding:10px 8px;
   border-bottom:1px solid rgba(195,154,43,.45)}
 table.board td{padding:15px 10px;text-align:center;border-bottom:1px dashed rgba(195,154,43,.28)}
 table.board tr.top1 td{background:rgba(232,205,132,.22)}
@@ -340,7 +343,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 .duelSide{border:1px solid rgba(195,154,43,.45);border-radius:14px;padding:20px 14px;text-align:center;
   background:rgba(255,255,255,.66)}
 .duelSide h5{font-size:18px;letter-spacing:.16em;color:var(--jade);margin-bottom:10px}
-.duelSide b{font-size:64px;line-height:1;font-weight:400;color:var(--red)}
+.duelSide b{font-size:72px;line-height:1;font-weight:600;color:var(--red);-webkit-text-stroke:.6px currentColor}
 .duelVs{font-size:30px;color:var(--gold);letter-spacing:.1em}
 .duelBtn{margin-top:12px;width:100%;padding:16px;border-radius:12px;border:1px solid;cursor:pointer;
   font-family:var(--serif);font-size:19px;letter-spacing:.2em;transition:.15s;color:#fff}
@@ -351,15 +354,16 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(247,240,226,.94));
   border:1px solid rgba(195,154,43,.45);box-shadow:var(--shadow)}
 .otWord::before{content:"";position:absolute;inset:7px;border:1px solid rgba(195,154,43,.22);border-radius:10px;pointer-events:none}
-.otWord .w{font-size:min(9.5vw,78px);font-weight:400;letter-spacing:.09em;color:#2f3a34}
+.otWord .w{font-size:min(10vw,88px);font-weight:600;letter-spacing:.09em;color:#2f3a34;-webkit-text-stroke:.6px currentColor}
 
 /* 印章水印 */
 .stamp{position:absolute;right:18px;bottom:16px;width:84px;height:84px;border:2.5px solid var(--red);
   border-radius:9px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
   color:var(--red);font-size:26px;line-height:1.05;letter-spacing:0;opacity:.5;transform:rotate(-7deg);
-  font-weight:400;padding:6px}
+  font-weight:600;-webkit-text-stroke:.45px currentColor;padding:6px}
 .stamp span{width:50%;text-align:center}
-.foot{text-align:center;margin-top:28px;font-size:13px;letter-spacing:.22em;color:var(--ink3)}
+.foot{text-align:center;margin-top:28px;font-size:14px;letter-spacing:.22em;color:var(--ink3)}
+
 .hide{display:none!important}
 .toast{position:fixed;left:50%;bottom:46px;transform:translateX(-50%) translateY(20px);z-index:60;
   background:rgba(51,64,58,.94);color:#f7f1e5;font-size:15px;letter-spacing:.14em;padding:13px 28px;
@@ -420,24 +424,6 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
     </g>
     <g id="osmanthus"></g>
 
-    <!-- 玉兔 -->
-    <g transform="translate(1130,600) scale(1.45)" opacity=".9">
-      <ellipse cx="60" cy="98" rx="31" ry="27" fill="#3d5249" opacity=".82"/>
-      <ellipse cx="33" cy="92" rx="9" ry="8" fill="#3d5249" opacity=".7"/>
-      <ellipse cx="76" cy="122" rx="15" ry="7" fill="#3d5249" opacity=".75"/>
-      <ellipse cx="97" cy="72" rx="18" ry="16" fill="#3d5249" opacity=".86"/>
-      <g id="rabbitEar">
-        <ellipse cx="89" cy="44" rx="6.5" ry="23" fill="#3d5249" opacity=".86" transform="rotate(-11 89 44)"/>
-        <ellipse cx="106" cy="41" rx="6.5" ry="25" fill="#3d5249" opacity=".86" transform="rotate(9 106 41)"/>
-        <ellipse cx="89" cy="46" rx="3" ry="16" fill="#f3e3b6" opacity=".5" transform="rotate(-11 89 46)"/>
-        <ellipse cx="106" cy="43" rx="3" ry="18" fill="#f3e3b6" opacity=".5" transform="rotate(9 106 43)"/>
-      </g>
-      <circle cx="103" cy="70" r="2.4" fill="#f7f1e5"/>
-      <circle cx="112" cy="76" r="1.5" fill="#b4322c" opacity=".55"/>
-      <g stroke="#3d5249" stroke-width="1.1" opacity=".5">
-        <path d="M112 76 l16 -5"/><path d="M112 79 l17 1"/><path d="M111 82 l15 6"/></g>
-    </g>
-
     <!-- 远近祥云 -->
     <use href="#cloud" x="90" y="120" width="160" height="80" opacity=".4" class="drift3"/>
     <use href="#cloud" x="600" y="70" width="120" height="60" opacity=".3" class="drift2"/>
@@ -488,7 +474,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <rect x="29" y="20" width="32" height="9" rx="2" fill="#c39a2b"/>
   <path d="M8 34 C8 30 82 30 82 34 C90 60 90 92 82 118 C82 122 8 122 8 118 C0 92 0 60 8 34 Z" fill="url(#lg)"/>
   <rect x="31" y="121" width="28" height="8" rx="2" fill="#c39a2b"/>
-  <text x="45" y="88" text-anchor="middle" font-size="30" fill="#e8cd84" font-family="KaiTi,STKaiti,Kaiti SC,serif">兔</text>
+  <text x="45" y="88" text-anchor="middle" font-size="30" fill="#e8cd84" font-family="KaiTi,STKaiti,Kaiti SC,serif">秋</text>
   <g stroke="#c39a2b" stroke-width="1.6"><path d="M40 130 v14"/><path d="M50 130 v14"/></g>
 </svg></div>
 
@@ -526,6 +512,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 
   <!-- ---------- 设置页 ---------- -->
   <section id="s-setup">
+
     <!-- 第一排：参赛小组（整幅横列） -->
     <div class="panel">
       <div class="ptitle" style="justify-content:center">参赛小组 <small>TEAMS · 点击组名可改，悬停卡片可删</small></div>
@@ -580,7 +567,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
             </div><em>秒</em>
           </div>
         </div>
-        <div class="row" style="justify-content:center;margin-top:16px">
+        <div class="row" style="justify-content:center;padding-top:16px">
           <button class="btn ghost sm" id="soundBtn" onclick="toggleSound()">🔔 音效：开</button>
         </div>
       </div>
@@ -604,8 +591,9 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
           <li><b>A 表达者</b>看词，只许用肢体与表情</li>
           <li><b>B 猜词者</b>背对屏幕，凭表演猜词</li>
           <li><b>两条禁忌</b>不出声、不口型、不指点</li>
-          <li><b>胜负</b>前 3 名获胜，第 3/4 名平分进加时</li>
+          <li><b>胜负</b>前 3 名获胜，平分进加时赛</li>
         </ul>
+        <div class="rlistFoot">犯规则该词作废<br>平分进入「黄金 30 秒生死战」</div>
       </div>
     </div>
 
@@ -705,7 +693,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
     <div class="panel" style="position:relative">
       <div class="stamp"><span>灵</span><span>犀</span></div>
       <div class="ptitle" style="justify-content:center">本组成绩单 <small id="rTeamSub"></small></div>
-      <h2 id="rTeam" style="font-size:32px;letter-spacing:.24em;text-align:center;color:var(--jade);margin-bottom:6px">第一组</h2>
+      <h2 id="rTeam" style="font-size:38px;letter-spacing:.24em;text-align:center;color:var(--jade);margin-bottom:6px;font-weight:600;-webkit-text-stroke:.45px currentColor">第一组</h2>
       <div style="font-size:14px;color:var(--ink3);letter-spacing:.12em;text-align:center" id="rMeta"></div>
       <div class="divider" style="margin:16px auto"><i></i><b></b><i></i></div>
       <div class="scoreRow">
@@ -775,7 +763,8 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
           <input type="number" id="otTimeInput" value="30" min="10" max="120" step="5">
         </div>
       </div>
-      <div style="text-align:center;margin-top:16px" id="otStartWrap">
+      <div class="row" style="justify-content:center;margin-top:18px;gap:14px" id="otStartWrap">
+        <button class="btn ghost" onclick="otBack()">← 返 回</button>
         <button class="btn red big" onclick="startOvertime()">开 始 加 时</button>
       </div>
 
@@ -800,8 +789,9 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
           <button class="act pass" onclick="otExtAct('skip')"><span class="key">P</span><div class="k">PASS</div><div class="s" id="otSkipSub">跳过</div></button>
           <button class="act foul" onclick="otExtAct('foul')"><span class="key">X</span><div class="k">违规作废</div><div class="s">强制切词</div></button>
         </div>
-        <div style="text-align:center;margin-top:16px">
+        <div class="row" style="justify-content:center;margin-top:16px;gap:12px">
           <button class="btn ghost sm" onclick="otQuit()">终止加时赛</button>
+          <button class="btn ghost sm" onclick="otBack()">← 返回上页</button>
         </div>
       </div>
     </div>
@@ -835,7 +825,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <p id="ovOtTip"></p>
   <div class="row" style="justify-content:center;margin-top:16px">
     <button class="btn gold" id="ovOtAgain" onclick="otAgain()">再来一局</button>
-    <button class="btn jade" onclick="show('s-board')">返回龙虎榜</button>
+    <button class="btn jade" id="ovOtBoard" onclick="otBack()">返回龙虎榜</button>
   </div>
 </div></div>
 
@@ -874,7 +864,8 @@ let state = {
   ot:null,
   timer:null,
   wordsBack:'s-setup',
-  wordsPaused:false
+  wordsPaused:false,
+  otBack:'s-board'
 };
 
 /* ---------------- 工具 ---------------- */
@@ -1251,6 +1242,7 @@ function exportCSV(){
 
 /* ---------------- 加时赛 ---------------- */
 function goOvertime(){
+  if(state.screen==='s-board'||state.screen==='s-result') state.otBack=state.screen;
   const opts=state.teams.map((t,i)=>'<option value="'+i+'">'+esc(t.name)+'（'+t.score+' 分）</option>').join('');
   $('#otTeamA').innerHTML=opts; $('#otTeamB').innerHTML=opts;
   const list=ranked();
@@ -1350,6 +1342,7 @@ function otFinish(side,why){
   $('#ovOtTip').innerHTML='<b style="font-size:19px;color:var(--red)">'+esc(state.teams[win].name)+'</b> 晋级前三！<br>'+
     esc(state.teams[o.a].name)+' '+o.sa+' ： '+o.sb+' '+esc(state.teams[o.b].name);
   $('#ovOtAgain').textContent='再来一局';
+  $('#ovOtBoard').textContent = state.otBack==='s-result' ? '返回成绩单' : '返回龙虎榜';
   $('#ovOtEnd').classList.add('show');
   renderBoard();
 }
@@ -1364,15 +1357,28 @@ function otFinishExt(){
   $('#ovOtNum').style.fontSize='66px';
   $('#ovOtTip').innerHTML=esc(team.name)+' 加时猜对 '+o.sa+' 词，跳过 '+o.skip+' 次，违规 '+o.foul+' 次<br>累计总分：<b style="font-size:18px;color:var(--red)">'+team.score+' 分</b>';
   $('#ovOtAgain').textContent='再加一轮';
+  $('#ovOtBoard').textContent = state.otBack==='s-result' ? '返回成绩单' : '返回龙虎榜';
   $('#ovOtEnd').classList.add('show');
   renderBoard();
 }
 function otAgain(){ $('#ovOtEnd').classList.remove('show'); goOvertime(); }
-function otQuit(){
+/* 把加时赛界面恢复成「未开始」状态 */
+function resetOtUI(){
   cancelTimer();
+  $('#ovOtEnd').classList.remove('show');
   $('#otPlay').classList.add('hide');
   $('#otSetup').classList.remove('hide'); $('#otConfig').classList.remove('hide'); $('#otStartWrap').classList.remove('hide');
-  toast('已终止加时赛');
+}
+/* 终止但停留在加时赛设置页 */
+function otQuit(){ resetOtUI(); toast('已终止加时赛'); }
+/* 返回进入加时赛前的页面（龙虎榜 / 成绩单），并确保能正常返回 */
+function otBack(){
+  const running = !!(state.ot && state.timer);
+  resetOtUI();
+  state.ot=null;
+  const back = (state.otBack==='s-result'||state.otBack==='s-board') ? state.otBack : 's-board';
+  show(back);
+  toast(running ? '已终止加时赛并返回' : '已返回'+(back==='s-board'?'龙虎榜':'成绩单'));
 }
 
 /* ---------------- 键盘 ---------------- */
@@ -1457,10 +1463,6 @@ function init(){
       saveSettings(); toast('已导入 '+parseCustom(txt).length+' 个词'); };
     rd.readAsText(f,'utf-8'); e.target.value='';
   });
-  const st=document.createElement('style');
-  st.textContent='@keyframes earT{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}55%{transform:rotate(3deg)}}'+
-    '#rabbitEar{transform-origin:97px 72px;animation:earT 5.5s ease-in-out infinite}';
-  document.head.appendChild(st);
   plantOsmanthus(); makePetals();
 }
 init();
