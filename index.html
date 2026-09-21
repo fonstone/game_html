@@ -13,7 +13,10 @@
   --red:#b4322c; --red2:#d15048; --red3:#e8a09a;
   --shadow:0 10px 34px rgba(51,64,58,.13);
   --shadow-s:0 4px 14px rgba(51,64,58,.10);
-  --serif:"Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun","STZhongsong",serif;
+  /* 楷体优先：Kaiti SC(mac) / STKaiti(mac) / KaiTi(win) / 楷体 / BiauKai(繁) → 宋体兜底 */
+  --kai:"Kaiti SC","STKaiti","KaiTi","楷体","楷体_GB2312","Kaiti TC","BiauKai","AR PL UKai CN","TW-Kai","楷体gb2312",
+        "Songti SC","STSong","Source Han Serif SC","Noto Serif CJK SC","SimSun",serif;
+  --serif:var(--kai);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
@@ -76,10 +79,10 @@ body{
 /* ---------- 布局 ---------- */
 .app{position:relative;z-index:5;max-width:1240px;margin:0 auto;padding:38px 30px 60px;min-height:100vh}
 header.hd{text-align:center;margin-bottom:22px;position:relative}
-.hd h1{font-size:38px;letter-spacing:.34em;font-weight:600;color:var(--ink);
-  text-shadow:0 2px 0 rgba(255,255,255,.6)}
+.hd h1{font-size:42px;letter-spacing:.36em;text-indent:.36em;font-weight:400;color:var(--ink);
+  text-shadow:0 2px 0 rgba(255,255,255,.65),0 6px 18px rgba(51,64,58,.10)}
 .hd h1 em{font-style:normal;color:var(--red)}
-.hd .sub{margin-top:8px;font-size:13.5px;letter-spacing:.28em;color:var(--ink2)}
+.hd .sub{margin-top:8px;font-size:13.5px;letter-spacing:.28em;text-indent:.28em;color:var(--ink2)}
 .hd .rule{width:200px;height:1px;margin:12px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);position:relative}
 .hd .rule::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:7px;margin-left:-3.5px;background:var(--gold);transform:rotate(45deg)}
 
@@ -87,13 +90,50 @@ header.hd{text-align:center;margin-bottom:22px;position:relative}
   border:1px solid rgba(195,154,43,.38);border-radius:16px;box-shadow:var(--shadow);
   padding:20px 22px;position:relative}
 .panel::before{content:"";position:absolute;inset:6px;border:1px solid rgba(195,154,43,.18);border-radius:11px;pointer-events:none}
+/* 四角回勾金线 —— 面板细节 */
+.panel::after{content:"";position:absolute;inset:6px;pointer-events:none;border-radius:11px;
+  --g:rgba(195,154,43,.85);
+  background:
+    linear-gradient(var(--g),var(--g)) no-repeat left top/18px 2px,
+    linear-gradient(var(--g),var(--g)) no-repeat left top/2px 18px,
+    linear-gradient(var(--g),var(--g)) no-repeat right top/18px 2px,
+    linear-gradient(var(--g),var(--g)) no-repeat right top/2px 18px,
+    linear-gradient(var(--g),var(--g)) no-repeat left bottom/18px 2px,
+    linear-gradient(var(--g),var(--g)) no-repeat left bottom/2px 18px,
+    linear-gradient(var(--g),var(--g)) no-repeat right bottom/18px 2px,
+    linear-gradient(var(--g),var(--g)) no-repeat right bottom/2px 18px}
+/* 对称分隔线：云纹+金刚结 */
+.divider{display:flex;align-items:center;justify-content:center;gap:16px;width:min(620px,88%);margin:24px auto}
+.divider i{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(195,154,43,.95))}
+.divider i:last-child{background:linear-gradient(90deg,rgba(195,154,43,.95),transparent)}
+.divider b{flex:none;width:11px;height:11px;background:var(--gold);transform:rotate(45deg);
+  box-shadow:0 0 0 4px rgba(195,154,43,.14)}
+/* 标题两侧对称祥云 */
+.hdOrn{position:absolute;top:2px;width:104px;height:52px;opacity:.5}
+.hdOrn.l{left:50%;transform:translateX(-352px)}
+.hdOrn.r{right:50%;transform:translateX(352px) scaleX(-1)}
+@media(max-width:1000px){.hdOrn{display:none}}
+/* 单卡片页面居中，视觉重心对称 */
+#s-result>.panel,#s-overtime>.panel{max-width:920px;margin:0 auto}
+/* 词库入口卡 */
+.wbEntry{max-width:660px;margin:0 auto;text-align:center;padding:24px 26px 26px}
+.wbStats{display:flex;justify-content:center;margin-top:6px}
+.wbStat{flex:1;padding:10px 4px;position:relative}
+.wbStat+.wbStat::before{content:"";position:absolute;left:0;top:14%;height:72%;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(195,154,43,.6),transparent)}
+.wbStat b{display:block;font-size:34px;line-height:1.2;font-weight:400;color:var(--jade)}
+.wbStat span{font-size:11.5px;letter-spacing:.2em;color:var(--ink3)}
+.wbTip{margin-top:10px;font-size:12.5px;color:var(--ink3);letter-spacing:.1em}
 .ptitle{font-size:16px;letter-spacing:.2em;color:var(--jade);margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .ptitle::before{content:"";width:6px;height:16px;background:var(--red);border-radius:2px}
 .ptitle small{font-size:11.5px;letter-spacing:.08em;color:var(--ink3);font-weight:400}
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.grid3{display:grid;grid-template-columns:1fr 1.35fr;gap:20px}
-@media(max-width:960px){.grid2,.grid3{grid-template-columns:1fr}}
+/* 首页左右等宽对称：小组在左、赛制在右 */
+.grid3{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3>.panel:first-child{order:2}
+.grid3>.panel:last-child{order:1}
+@media(max-width:960px){.grid2,.grid3{grid-template-columns:1fr}.grid3>.panel:first-child,.grid3>.panel:last-child{order:0}}
 
 /* 表单 */
 label.fld{display:block;font-size:13px;color:var(--ink2);letter-spacing:.12em;margin-bottom:6px}
@@ -152,7 +192,7 @@ textarea{resize:vertical;min-height:132px;line-height:1.85}
 
 /* ---------- 游戏页 ---------- */
 .gameTop{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:16px}
-.gTeam{font-size:20px;letter-spacing:.2em;color:var(--jade)}
+.gTeam{flex:1;text-align:left;font-size:20px;letter-spacing:.2em;color:var(--jade)}
 .gTeam small{display:block;font-size:11.5px;letter-spacing:.14em;color:var(--ink3);margin-top:4px}
 .ringWrap{position:relative;width:132px;height:132px;flex:none}
 .ring{width:132px;height:132px;transform:rotate(-90deg)}
@@ -161,14 +201,14 @@ textarea{resize:vertical;min-height:132px;line-height:1.85}
 .ring-fg.warn{stroke:var(--gold)}
 .ring-fg.danger{stroke:var(--red)}
 .ringTxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ringNum{font-size:38px;font-weight:600;letter-spacing:.02em;color:var(--ink);line-height:1}
+.ringNum{font-size:40px;font-weight:400;letter-spacing:.02em;color:var(--ink);line-height:1}
 .ringLbl{font-size:10.5px;letter-spacing:.24em;color:var(--ink3);margin-top:5px}
 .ringWrap.danger .ringNum{color:var(--red);animation:pulse .6s ease-in-out infinite alternate}
 @keyframes pulse{from{transform:scale(1)}to{transform:scale(1.07)}}
-.stats{display:flex;gap:10px}
+.stats{flex:1;display:flex;gap:10px;justify-content:flex-end}
 .stat{min-width:82px;text-align:center;padding:9px 12px;border-radius:11px;
   background:rgba(255,255,255,.66);border:1px solid rgba(195,154,43,.35)}
-.stat b{display:block;font-size:25px;line-height:1.15;color:var(--jade)}
+.stat b{display:block;font-size:27px;line-height:1.15;font-weight:400;color:var(--jade)}
 .stat span{font-size:11px;letter-spacing:.16em;color:var(--ink3)}
 .stat.red b{color:var(--red)}
 .stat.gold b{color:var(--gold)}
@@ -178,13 +218,17 @@ textarea{resize:vertical;min-height:132px;line-height:1.85}
     radial-gradient(600px 240px at 50% 0%,rgba(232,205,132,.22),transparent 70%),
     linear-gradient(180deg,rgba(255,253,248,.96),rgba(247,240,226,.94));
   border:1px solid rgba(195,154,43,.45);box-shadow:var(--shadow);overflow:hidden}
-.wordCard::before,.wordCard::after{content:"";position:absolute;width:82px;height:82px;opacity:.42}
-.wordCard::before{left:-10px;top:-10px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M14 66 C14 52 22 44 34 44 C36 30 46 22 60 22 C70 22 79 28 83 38 C95 36 104 42 104 52 L14 52 Z' fill='none' stroke='%23c39a2b' stroke-width='2.4'/></svg>") no-repeat center/contain}
-.wordCard::after{right:-10px;bottom:-10px;transform:rotate(180deg);background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M14 66 C14 52 22 44 34 44 C36 30 46 22 60 22 C70 22 79 28 83 38 C95 36 104 42 104 52 L14 52 Z' fill='none' stroke='%232f5b4d' stroke-width='2.4'/></svg>") no-repeat center/contain}
+/* 词卡四角对称祥云 */
+.wordCard .wc{position:absolute;width:84px;height:84px;opacity:.4;pointer-events:none;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M14 66 C14 52 22 44 34 44 C36 30 46 22 60 22 C70 22 79 28 83 38 C95 36 104 42 104 52 L14 52 Z' fill='none' stroke='%23c39a2b' stroke-width='2.4'/><path d='M83 38 c10-2 14 5 11 10 c-2 3-7 3-9 1 c-2-2-1-6 2-7' fill='none' stroke='%232f5b4d' stroke-width='2'/></svg>") no-repeat center/contain}
+.wordCard .c1{left:-10px;top:-10px}
+.wordCard .c2{right:-10px;top:-10px;transform:scaleX(-1)}
+.wordCard .c3{left:-10px;bottom:-10px;transform:scaleY(-1)}
+.wordCard .c4{right:-10px;bottom:-10px;transform:scale(-1)}
 .wIdx{font-size:12px;letter-spacing:.3em;color:var(--ink3);margin-bottom:16px}
-.wWord{font-size:min(11vw,86px);line-height:1.18;font-weight:600;letter-spacing:.06em;color:var(--ink);
-  text-shadow:0 3px 0 rgba(255,255,255,.7),0 10px 22px rgba(51,64,58,.10);word-break:break-all}
-.wWord.flip{animation:flipIn .34s cubic-bezier(.2,.9,.3,1.2)}
+.wWord{font-size:min(11vw,90px);line-height:1.2;font-weight:400;letter-spacing:.1em;color:#2f3a34;
+  text-shadow:0 2px 0 rgba(255,255,255,.75),0 12px 26px rgba(51,64,58,.13);word-break:break-all}
+.wWord.flip,.w.flip{animation:flipIn .34s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes flipIn{from{opacity:0;transform:translateY(16px) scale(.94)}to{opacity:1;transform:none}}
 .wHint{margin-top:20px;font-size:12.5px;letter-spacing:.14em;color:var(--ink3)}
 .wDeck{margin-top:6px;font-size:11.5px;color:var(--ink3);letter-spacing:.1em}
@@ -218,7 +262,7 @@ textarea{resize:vertical;min-height:132px;line-height:1.85}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .ovCard{background:linear-gradient(180deg,#fdfaf3,#f5eddd);border:1px solid var(--gold);
   border-radius:18px;padding:38px 46px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3);min-width:320px}
-.ovBig{font-size:110px;line-height:1;color:var(--red);font-weight:600;letter-spacing:.05em}
+.ovBig{font-size:112px;line-height:1;color:var(--red);font-weight:400;letter-spacing:.05em}
 .ovCard h3{font-size:22px;letter-spacing:.24em;color:var(--jade);margin-bottom:6px}
 .ovCard p{font-size:13px;color:var(--ink2);letter-spacing:.12em;margin-top:8px;line-height:1.9}
 
@@ -227,7 +271,7 @@ textarea{resize:vertical;min-height:132px;line-height:1.85}
 @media(max-width:760px){.scoreRow{grid-template-columns:repeat(2,1fr)}}
 .sc{text-align:center;padding:18px 10px;border-radius:14px;background:rgba(255,255,255,.7);
   border:1px solid rgba(195,154,43,.4)}
-.sc b{display:block;font-size:40px;line-height:1.1}
+.sc b{display:block;font-size:42px;line-height:1.15;font-weight:400}
 .sc span{font-size:11.5px;letter-spacing:.2em;color:var(--ink3)}
 .sc.jade b{color:var(--jade)} .sc.gold b{color:var(--gold)} .sc.red b{color:var(--red)} .sc.ink b{color:var(--ink2)}
 .hist{max-height:210px;overflow:auto;padding:12px;border-radius:12px;background:rgba(236,224,201,.4);
@@ -269,17 +313,18 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 .duelSide{border:1px solid rgba(195,154,43,.45);border-radius:14px;padding:20px 14px;text-align:center;
   background:rgba(255,255,255,.66)}
 .duelSide h5{font-size:16px;letter-spacing:.16em;color:var(--jade);margin-bottom:10px}
-.duelSide b{font-size:52px;line-height:1;color:var(--red)}
+.duelSide b{font-size:56px;line-height:1;font-weight:400;color:var(--red)}
 .duelVs{font-size:26px;color:var(--gold);letter-spacing:.1em}
 .duelBtn{margin-top:12px;width:100%;padding:16px;border-radius:12px;border:1px solid;cursor:pointer;
   font-family:var(--serif);font-size:17px;letter-spacing:.2em;transition:.15s;color:#fff}
 .duelBtn.a{background:linear-gradient(180deg,#4d8a75,var(--jade));border-color:#22473c}
 .duelBtn.b{background:linear-gradient(180deg,#dc7a72,var(--red));border-color:#8d2620}
 .duelBtn:active{transform:scale(.97)}
-.otWord{text-align:center;padding:34px 20px;border-radius:16px;margin:16px 0;
+.otWord{text-align:center;padding:34px 20px;border-radius:16px;margin:16px 0;position:relative;
   background:linear-gradient(180deg,rgba(255,253,248,.96),rgba(247,240,226,.94));
   border:1px solid rgba(195,154,43,.45);box-shadow:var(--shadow)}
-.otWord .w{font-size:min(9vw,64px);font-weight:600;letter-spacing:.06em}
+.otWord::before{content:"";position:absolute;inset:7px;border:1px solid rgba(195,154,43,.22);border-radius:10px;pointer-events:none}
+.otWord .w{font-size:min(9vw,66px);font-weight:400;letter-spacing:.09em;color:#2f3a34}
 
 /* 印章水印 */
 .stamp{position:absolute;right:16px;bottom:14px;width:74px;height:74px;border:2.5px solid var(--red);
@@ -388,7 +433,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <g stroke="#e8cd84" stroke-opacity=".55" stroke-width="1.3" fill="none">
     <path d="M24 32 C18 60 18 92 24 120"/><path d="M45 31 L45 121"/><path d="M66 32 C72 60 72 92 66 120"/></g>
   <rect x="31" y="121" width="28" height="8" rx="2" fill="#c39a2b"/>
-  <text x="45" y="86" text-anchor="middle" font-size="34" fill="#e8cd84" font-family="serif">團</text>
+  <text x="45" y="86" text-anchor="middle" font-size="34" fill="#e8cd84" font-family="KaiTi,STKaiti,Kaiti SC,serif">團</text>
   <g stroke="#c39a2b" stroke-width="1.8"><path d="M38 130 v18"/><path d="M45 130 v22"/><path d="M52 130 v18"/></g>
   <path d="M38 148 C40 162 50 162 52 148 Z" fill="#b4322c"/>
 </svg></div>
@@ -399,7 +444,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <g stroke="#e8cd84" stroke-opacity=".55" stroke-width="1.3" fill="none">
     <path d="M24 32 C18 60 18 92 24 120"/><path d="M45 31 L45 121"/><path d="M66 32 C72 60 72 92 66 120"/></g>
   <rect x="31" y="121" width="28" height="8" rx="2" fill="#c39a2b"/>
-  <text x="45" y="86" text-anchor="middle" font-size="34" fill="#e8cd84" font-family="serif">圓</text>
+  <text x="45" y="86" text-anchor="middle" font-size="34" fill="#e8cd84" font-family="KaiTi,STKaiti,Kaiti SC,serif">圓</text>
   <g stroke="#c39a2b" stroke-width="1.8"><path d="M38 130 v18"/><path d="M45 130 v22"/><path d="M52 130 v18"/></g>
   <path d="M38 148 C40 162 50 162 52 148 Z" fill="#b4322c"/>
 </svg></div>
@@ -408,7 +453,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <rect x="29" y="20" width="32" height="9" rx="2" fill="#c39a2b"/>
   <path d="M8 34 C8 30 82 30 82 34 C90 60 90 92 82 118 C82 122 8 122 8 118 C0 92 0 60 8 34 Z" fill="url(#lg)"/>
   <rect x="31" y="121" width="28" height="8" rx="2" fill="#c39a2b"/>
-  <text x="45" y="88" text-anchor="middle" font-size="30" fill="#e8cd84" font-family="serif">月</text>
+  <text x="45" y="88" text-anchor="middle" font-size="30" fill="#e8cd84" font-family="KaiTi,STKaiti,Kaiti SC,serif">月</text>
   <g stroke="#c39a2b" stroke-width="1.6"><path d="M40 130 v14"/><path d="M50 130 v14"/></g>
 </svg></div>
 <div class="lantern small r2" aria-hidden="true"><svg viewBox="0 0 90 170">
@@ -416,7 +461,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <rect x="29" y="20" width="32" height="9" rx="2" fill="#c39a2b"/>
   <path d="M8 34 C8 30 82 30 82 34 C90 60 90 92 82 118 C82 122 8 122 8 118 C0 92 0 60 8 34 Z" fill="url(#lg)"/>
   <rect x="31" y="121" width="28" height="8" rx="2" fill="#c39a2b"/>
-  <text x="45" y="88" text-anchor="middle" font-size="30" fill="#e8cd84" font-family="serif">兔</text>
+  <text x="45" y="88" text-anchor="middle" font-size="30" fill="#e8cd84" font-family="KaiTi,STKaiti,Kaiti SC,serif">兔</text>
   <g stroke="#c39a2b" stroke-width="1.6"><path d="M40 130 v14"/><path d="M50 130 v14"/></g>
 </svg></div>
 
@@ -435,6 +480,18 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 <!-- ================= 主体 ================= -->
 <div class="app">
   <header class="hd">
+    <svg class="hdOrn l" viewBox="0 0 120 60" aria-hidden="true">
+      <path d="M8 46 C8 36 14 30 22 30 C24 20 32 14 42 14 C50 14 57 19 60 27 C70 25 80 30 84 38 C92 38 98 42 98 48 Z"
+            fill="#fff" fill-opacity=".45" stroke="#c39a2b" stroke-width="1.8"/>
+      <path d="M84 38 c9-2 13 4 10 9 c-2 3-6 3-8.5 1 c-2-2-1-5 2-6" fill="none" stroke="#2f5b4d" stroke-width="1.5" stroke-opacity=".7"/>
+      <path d="M22 30 c-7 0-9 7-4 10 c3 2 7 0 6.5-3.5" fill="none" stroke="#2f5b4d" stroke-width="1.4" stroke-opacity=".55"/>
+    </svg>
+    <svg class="hdOrn r" viewBox="0 0 120 60" aria-hidden="true">
+      <path d="M8 46 C8 36 14 30 22 30 C24 20 32 14 42 14 C50 14 57 19 60 27 C70 25 80 30 84 38 C92 38 98 42 98 48 Z"
+            fill="#fff" fill-opacity=".45" stroke="#c39a2b" stroke-width="1.8"/>
+      <path d="M84 38 c9-2 13 4 10 9 c-2 3-6 3-8.5 1 c-2-2-1-5 2-6" fill="none" stroke="#2f5b4d" stroke-width="1.5" stroke-opacity=".7"/>
+      <path d="M22 30 c-7 0-9 7-4 10 c3 2 7 0 6.5-3.5" fill="none" stroke="#2f5b4d" stroke-width="1.4" stroke-opacity=".55"/>
+    </svg>
     <h1>心<em>有</em>灵<em>犀</em></h1>
     <div class="sub">双人猜词挑战赛 · 两分钟 · 默契对决</div>
     <div class="rule"></div>
@@ -481,11 +538,41 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
           <button class="btn ghost sm" onclick="addTeam()">＋ 增加一组</button>
           <span style="font-size:11.5px;color:var(--ink3);letter-spacing:.1em">点击组名可修改 · 悬停可删除</span>
         </div>
+        <div class="tipbox" style="margin-top:16px">
+          <b>上场须知</b><br>
+          按抽签顺序依次上场，每组仅一次完整挑战机会。<br>
+          A / B 角色一旦选定，中途绝对不可交换。
+        </div>
       </div>
     </div>
 
-    <div class="panel" style="margin-top:20px">
-      <div class="ptitle">游戏词库 <small>WORD BANK · 分类与自定义，随机不重复出题</small></div>
+    <div class="divider"><i></i><b></b><i></i></div>
+
+    <div class="panel wbEntry">
+      <div class="ptitle" style="justify-content:center">游戏词库 <small>WORD BANK · 随机不重复出题</small></div>
+      <div class="wbStats">
+        <div class="wbStat"><b id="wbCat">0</b><span>已选分类</span></div>
+        <div class="wbStat"><b id="wbCus">0</b><span>自定义词</span></div>
+        <div class="wbStat"><b id="wbAll">0</b><span>词库总数</span></div>
+      </div>
+      <div class="wbTip" id="wbTip">开赛前可随时增删词条，抽题全程不重复</div>
+      <div class="row" style="justify-content:center;margin-top:18px">
+        <button class="btn jade" onclick="openWords()">📖 进 入 词 库 设 置</button>
+      </div>
+    </div>
+
+    <div class="divider"><i></i><b></b><i></i></div>
+
+    <div style="text-align:center;margin-top:8px">
+      <button class="btn red big" onclick="startMatch()">开 始 比 赛</button>
+      <div class="foot">按抽签顺序依次上场 · 每组一次挑战机会 · 前 3 名获胜</div>
+    </div>
+  </section>
+
+  <!-- ---------- 词库设置页（独立页面） ---------- -->
+  <section id="s-words" class="hide">
+    <div class="panel">
+      <div class="ptitle" style="justify-content:center">游戏词库设置 <small>WORD BANK · 分类与自定义，随机不重复出题</small></div>
       <div class="grid2">
         <div>
           <label class="fld">① 选择分类（可多选，留空则仅用自定义词库）</label>
@@ -507,13 +594,13 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
           </div>
         </div>
       </div>
-      <label class="fld" style="margin-top:14px">③ 词库预览（随机抽取 <span id="pvN">0</span> / <span id="pvT">0</span>）</label>
+      <label class="fld" style="margin-top:14px">③ 词库预览（共 <span id="pvN">0</span> / <span id="pvT">0</span> 词，随机抽取展示）</label>
       <div class="preview" id="previewList"></div>
-    </div>
-
-    <div style="text-align:center;margin-top:26px">
-      <button class="btn red big" onclick="startMatch()">开 始 比 赛</button>
-      <div class="foot">按抽签顺序依次上场 · 每组一次挑战机会 · 前 3 名获胜</div>
+      <div class="divider"><i></i><b></b><i></i></div>
+      <div class="row" style="justify-content:center;gap:14px;flex-wrap:wrap">
+        <button class="btn ghost" onclick="backFromWords()">← 返 回</button>
+        <button class="btn red" onclick="startMatch()">保存并开始比赛</button>
+      </div>
     </div>
   </section>
 
@@ -537,6 +624,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
     </div>
 
     <div class="wordCard">
+      <i class="wc c1"></i><i class="wc c2"></i><i class="wc c3"></i><i class="wc c4"></i>
       <div class="wIdx" id="wIdx">第 1 词 · 准备</div>
       <div class="wWord" id="gWord">心有灵犀</div>
       <div class="wHint" id="wHint">A 同事请看词表演，B 同事请背对屏幕</div>
@@ -559,6 +647,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 
     <div class="row" style="justify-content:center;margin-top:18px">
       <button class="btn ghost sm" onclick="togglePause()">暂停 / 继续（Esc）</button>
+      <button class="btn ghost sm" onclick="openWords()">📖 词库设置（自动暂停）</button>
       <button class="btn ghost sm" onclick="endRound(true)">提前结束本组</button>
     </div>
   </section>
@@ -567,9 +656,10 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <section id="s-result" class="hide">
     <div class="panel" style="position:relative">
       <div class="stamp"><span>灵</span><span>犀</span></div>
-      <div class="ptitle">本组成绩单 <small id="rTeamSub"></small></div>
-      <h2 id="rTeam" style="font-size:26px;letter-spacing:.24em;color:var(--jade);margin-bottom:6px">第一组</h2>
-      <div style="font-size:12.5px;color:var(--ink3);letter-spacing:.12em" id="rMeta"></div>
+      <div class="ptitle" style="justify-content:center">本组成绩单 <small id="rTeamSub"></small></div>
+      <h2 id="rTeam" style="font-size:28px;letter-spacing:.24em;text-align:center;color:var(--jade);margin-bottom:6px">第一组</h2>
+      <div style="font-size:12.5px;color:var(--ink3);letter-spacing:.12em;text-align:center" id="rMeta"></div>
+      <div class="divider" style="margin:16px auto"><i></i><b></b><i></i></div>
       <div class="scoreRow">
         <div class="sc jade"><b id="rScore">0</b><span>猜 对</span></div>
         <div class="sc gold"><b id="rSkip">0</b><span>跳 过</span></div>
@@ -591,7 +681,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <!-- ---------- 龙虎榜 ---------- -->
   <section id="s-board" class="hide">
     <div class="panel">
-      <div class="ptitle">龙虎榜 <small>LEADERBOARD · 前 3 名获胜</small></div>
+      <div class="ptitle" style="justify-content:center">龙虎榜 <small>LEADERBOARD · 前 3 名获胜</small></div>
       <table class="board">
         <thead><tr><th>名次</th><th>小组</th><th>猜对</th><th>跳过</th><th>违规</th><th>正确率</th><th>状态</th></tr></thead>
         <tbody id="boardBody"></tbody>
@@ -600,6 +690,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
       <div class="row" style="margin-top:18px;gap:12px;flex-wrap:wrap">
         <button class="btn jade" id="btnContinue" onclick="nextTeam()">继续下一组</button>
         <button class="btn red" onclick="goOvertime()">加 时 赛</button>
+        <button class="btn ghost" onclick="openWords()">📖 词库设置</button>
         <button class="btn ghost" onclick="exportCSV()">导出成绩 CSV</button>
         <button class="btn ghost" onclick="show('s-setup')">返回设置</button>
       </div>
@@ -609,7 +700,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
   <!-- ---------- 加时赛 ---------- -->
   <section id="s-overtime" class="hide">
     <div class="panel">
-      <div class="ptitle">加时赛 <small id="otSub">OVERTIME</small></div>
+      <div class="ptitle" style="justify-content:center">加 时 赛 <small id="otSub">OVERTIME</small></div>
 
       <div class="modeSel" id="otSetup">
         <div class="mcard on" id="mcDuel" onclick="setOtMode('duel')">
@@ -668,7 +759,8 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
     </div>
   </section>
 
-  <div class="foot">祥云绕月 · 玉兔伴桂 · 灯下团圆 ——— 心有灵犀，一点通</div>
+  <div class="divider"><i></i><b></b><i></i></div>
+  <div class="foot">祥云绕月 · 玉兔伴桂 · 灯下团圆　—　心有灵犀，一点通</div>
 </div>
 
 <!-- 遮罩 -->
@@ -702,7 +794,628 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 <div class="toast" id="toast"></div>
 
 <script>
-/* JS_PLACEHOLDER */
+/* ==================================================================
+   「心有灵犀」双人挑战赛 —— 交互逻辑
+   ================================================================== */
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ---------------- 词库 ---------------- */
+const CATS = {
+  '中秋团圆':['月饼','赏月','团圆','嫦娥奔月','玉兔捣药','桂花酒','灯笼','猜灯谜','月圆之夜','思乡','拜月','柚子','花好月圆','千里共婵娟','团圆饭','月饼模具','孔明灯','桂花香','满月','吴刚伐桂','月光','月饼礼盒','赏桂','阖家欢乐'],
+  '四字成语':['守株待兔','画蛇添足','掩耳盗铃','对牛弹琴','井底之蛙','狐假虎威','亡羊补牢','望梅止渴','胸有成竹','一箭双雕','鹤立鸡群','如鱼得水','骑虎难下','火上浇油','雪中送炭','锦上添花','开门见山','水落石出','九牛一毛','指鹿为马','杯弓蛇影','画龙点睛','滥竽充数','南辕北辙','买椟还珠','拔苗助长','刻舟求剑','叶公好龙','班门弄斧','囫囵吞枣'],
+  '飞禽走兽':['长颈鹿','企鹅','袋鼠','章鱼','孔雀开屏','树懒','刺猬','蝙蝠','蜗牛','螃蟹','蝴蝶','大熊猫','骆驼','老鹰','海豚','青蛙','鹦鹉','乌龟','松鼠','狮子','河马','斑马','水母','猫头鹰','壁虎','大象','狐狸','天鹅'],
+  '生活百物':['雨伞','吹风机','洗衣机','指甲刀','拖把','牙刷','电风扇','微波炉','订书机','遥控器','高跟鞋','口罩','钥匙','剪刀','吸尘器','电饭煲','晾衣架','行李箱','打火机','保温杯','眼镜','闹钟','雨靴','台灯','卷尺','路由器','扫地机器人','充电宝'],
+  '动作场景':['打喷嚏','打哈欠','跳绳','游泳','举重','开车','理发','拍照','钓鱼','爬山','骑自行车','弹钢琴','打篮球','洗碗','织毛衣','滑雪','刷牙','化妆','打太极','挤地铁','拔河','放风筝','包饺子','遛狗','打哈欠连天','擦玻璃','搬砖','抢红包'],
+  '影视经典':['孙悟空','哪吒','葫芦娃','武松打虎','泰坦尼克号','哈利波特','蜘蛛侠','功夫熊猫','白雪公主','变形金刚','葫芦兄弟','葫芦山','西游记','钢铁侠','美人鱼','喜羊羊','黑旋风李逵','诸葛亮','葫芦救爷爷','甄嬛传','还珠格格','狮子王','千与千寻','龙猫'],
+  '人间烟火':['火锅','烤鸭','麻辣烫','糖葫芦','臭豆腐','小笼包','拉面','寿司','披萨','炸鸡','棉花糖','冰淇淋','烤红薯','羊肉串','螺蛳粉','生煎包','奶茶','蛋炒饭','月饼','桂花糕','汤圆','粽子','烧饼','关东煮'],
+  '网络热词':['内卷','躺平','破防','绝绝子','社恐','打call','摆烂','上头','凡尔赛','摸鱼','真香','吃瓜','干饭人','emo','yyds','双向奔赴','city不city','显眼包','班味','电子榨菜','嘴替','搭子','开摆','情绪价值']
+};
+const DEMO_CUSTOM = '心有灵犀\n猜灯谜\n月下独酌\n桂子飘香\n玉兔东升\n阖家团圆';
+
+/* ---------------- 状态 ---------------- */
+const DEF = {
+  settings:{ duration:120, maxSkip:3, otDuration:30, sound:true, cats:Object.keys(CATS).slice(0,4), custom:'' },
+  teams:[]
+};
+let state = {
+  settings:{...DEF.settings, cats:[...DEF.settings.cats]},
+  teams:['第一组','第二组','第三组','第四组','第五组'].map(n=>({name:n,score:0,skip:0,foul:0,played:false,history:[],advanced:false})),
+  screen:'s-setup',
+  round:null,
+  ot:null,
+  timer:null,
+  wordsBack:'s-setup',
+  wordsPaused:false
+};
+
+/* ---------------- 工具 ---------------- */
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const clamp = (v,a,b)=>Math.min(b,Math.max(a,v));
+function show(id){
+  ['s-setup','s-words','s-game','s-result','s-board','s-overtime'].forEach(s=>$('#'+s).classList.toggle('hide', s!==id));
+  state.screen=id;
+  if(id==='s-board') renderBoard();
+  if(id==='s-setup'||id==='s-words') updatePool();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* 词库独立页：从任意界面跳转，返回时自动回到原界面（游戏中会自动暂停/续跑） */
+function openWords(){
+  state.wordsBack = state.screen;
+  if(state.timer && !state.timer.paused){
+    state.timer.paused=true;
+    state.timer.remain=Math.max(0,(state.timer.end-performance.now())/1000);
+    if(raf) cancelAnimationFrame(raf);
+    state.wordsPaused=true;
+  }
+  show('s-words');
+}
+function backFromWords(){
+  const back = state.wordsBack || 's-setup';
+  if(state.wordsPaused && state.timer){
+    state.wordsPaused=false;
+    state.timer.paused=false;
+    state.timer.end=performance.now()+state.timer.remain*1000;
+    loop();
+  }
+  show(back);
+}
+let toastTimer=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1900);
+}
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------------- 音效 ---------------- */
+let AC=null;
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function tone(freq,dur,type='sine',vol=.16,delay=0){
+  if(!state.settings.sound) return; const c=ac(); if(!c) return;
+  const t0=c.currentTime+delay, o=c.createOscillator(), g=c.createGain();
+  o.type=type; o.frequency.setValueAtTime(freq,t0);
+  g.gain.setValueAtTime(0,t0); g.gain.linearRampToValueAtTime(vol,t0+.02);
+  g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+  o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t0+dur+.05);
+}
+const SFX = {
+  correct(){ tone(784,.14,'triangle',.14); tone(1175,.18,'triangle',.12,.09); tone(1568,.22,'sine',.08,.18); },
+  skip(){ tone(262,.16,'sawtooth',.09); tone(196,.2,'sine',.08,.1); },
+  foul(){ tone(150,.26,'square',.1); tone(110,.3,'sine',.09,.12); },
+  tick(){ tone(1180,.06,'square',.07); },
+  start(){ [523,659,784,1047].forEach((f,i)=>tone(f,.16,'triangle',.12,i*.1)); },
+  over(){ tone(220,1.1,'sine',.14); tone(146,1.3,'sine',.11,.06); tone(330,.7,'triangle',.06,.05); },
+  win(){ [523,659,784,1047,1319].forEach((f,i)=>tone(f,.2,'triangle',.12,i*.11)); },
+  click(){ tone(880,.06,'sine',.07); }
+};
+
+/* ---------------- 设置持久化 ---------------- */
+function saveSettings(){
+  state.settings.duration = clamp(+$('#duration').value||120,30,600);
+  state.settings.maxSkip  = clamp(+$('#maxSkip').value||0,0,10);
+  state.settings.otDuration = clamp(+$('#otDuration').value||30,10,120);
+  state.settings.custom = $('#customWords').value;
+  try{ localStorage.setItem('xylx_v1', JSON.stringify({settings:state.settings, teams:state.teams})); }catch(e){}
+  updatePool();
+}
+function loadSaved(){
+  try{
+    const raw=localStorage.getItem('xylx_v1'); if(!raw) return;
+    const d=JSON.parse(raw);
+    if(d.settings) Object.assign(state.settings,d.settings);
+    if(Array.isArray(d.teams)&&d.teams.length) state.teams=d.teams;
+  }catch(e){}
+  $('#duration').value=state.settings.duration;
+  $('#maxSkip').value=state.settings.maxSkip;
+  $('#otDuration').value=state.settings.otDuration;
+  $('#otTimeInput').value=state.settings.otDuration;
+  $('#customWords').value=state.settings.custom||'';
+}
+
+/* ---------------- 设置页 UI ---------------- */
+function renderCats(){
+  const box=$('#catChips'); box.innerHTML='';
+  Object.keys(CATS).forEach(k=>{
+    const on=state.settings.cats.includes(k);
+    const el=document.createElement('div');
+    el.className='chip'+(on?' on':'');
+    el.innerHTML=esc(k)+'<span class="n">'+CATS[k].length+'</span>';
+    el.onclick=()=>{
+      const i=state.settings.cats.indexOf(k);
+      if(i>=0) state.settings.cats.splice(i,1); else state.settings.cats.push(k);
+      el.classList.toggle('on'); SFX.click(); saveSettings();
+    };
+    box.appendChild(el);
+  });
+}
+function renderTeams(){
+  const g=$('#teamsGrid'); g.innerHTML='';
+  state.teams.forEach((t,i)=>{
+    const d=document.createElement('div');
+    d.className='tcard'+(t.played?' done':'');
+    d.innerHTML='<div class="idx">第 '+(i+1)+' 组</div>'+
+      '<input type="text" value="'+esc(t.name)+'">'+
+      '<div class="st">'+(t.played?('已挑战 · 猜对 '+t.score+' 词'+(t.advanced?' · 晋级':'')):'待上场')+'</div>'+
+      '<button class="del" title="删除">×</button>';
+    const inp=d.querySelector('input');
+    inp.oninput=()=>{ t.name=inp.value||('第'+(i+1)+'组'); saveSettings(); };
+    d.querySelector('.del').onclick=()=>{ if(state.teams.length<=2){toast('至少保留 2 组');return;} state.teams.splice(i,1); renderTeams(); saveSettings(); };
+    g.appendChild(d);
+  });
+}
+function addTeam(){ state.teams.push({name:'第'+(state.teams.length+1)+'组',score:0,skip:0,foul:0,played:false,history:[],advanced:false}); renderTeams(); saveSettings(); }
+function step(id,d){
+  const el=$('#'+id); const v=clamp((+el.value||0)+d, +el.min, +el.max); el.value=v;
+  if(id==='otDuration') $('#otTimeInput').value=v;
+  saveSettings();
+}
+function toggleSound(){
+  state.settings.sound=!state.settings.sound;
+  $('#soundBtn').textContent = state.settings.sound ? '🔔 音效：开' : '🔕 音效：关';
+  if(state.settings.sound) SFX.click(); saveSettings();
+}
+function resetAll(){
+  if(!confirm('确定清空所有成绩与设置，重新开始吗？')) return;
+  localStorage.removeItem('xylx_v1');
+  state.settings={...DEF.settings, cats:[...DEF.settings.cats], custom:''};
+  state.teams=['第一组','第二组','第三组','第四组','第五组'].map(n=>({name:n,score:0,skip:0,foul:0,played:false,history:[],advanced:false}));
+  $('#duration').value=120; $('#maxSkip').value=3; $('#otDuration').value=30; $('#customWords').value='';
+  $('#soundBtn').textContent='🔔 音效：开';
+  renderCats(); renderTeams(); updatePool(); toast('已重置');
+}
+function selectAllCats(on){ state.settings.cats = on?Object.keys(CATS):[]; renderCats(); saveSettings(); }
+function fillDemo(){ $('#customWords').value = DEMO_CUSTOM; saveSettings(); toast('已载入示例词'); }
+function clearCustom(){ $('#customWords').value=''; saveSettings(); }
+
+/* ---------------- 词库池 ---------------- */
+function parseCustom(txt){
+  return String(txt||'').split(/[\n\r,，、;；\s]+/).map(s=>s.trim()).filter(Boolean);
+}
+function poolWords(){
+  let w=[];
+  state.settings.cats.forEach(c=>{ if(CATS[c]) w=w.concat(CATS[c]); });
+  w=w.concat(parseCustom(state.settings.custom));
+  return Array.from(new Set(w.filter(Boolean)));
+}
+function updatePool(){
+  const p=poolWords();
+  $('#wordCount').textContent='当前词库共 '+p.length+' 个词'+(p.length?'':'（请至少添加 1 个词）');
+  $('#pvN').textContent=p.length; $('#pvT').textContent=p.length;
+  const cus=parseCustom(state.settings.custom).length;
+  const catN=state.settings.cats.filter(c=>CATS[c]).length;
+  const set=(id,v)=>{ const e=$(id); if(e) e.textContent=v; };
+  set('#wbCat',catN); set('#wbCus',cus); set('#wbAll',p.length);
+  const tip=$('#wbTip');
+  if(tip) tip.textContent = p.length
+    ? '已选 '+catN+' 个分类 · 自定义 '+cus+' 词 · 共 '+p.length+' 词，随机不重复抽题'
+    : '词库为空，请进入设置选择分类或填写自定义词';
+  const pv=$('#previewList');
+  if(!p.length){ pv.innerHTML='<span style="color:var(--red)">词库为空，请选择分类或填写自定义词</span>'; return; }
+  pv.innerHTML = shuffle(p).slice(0,60).map(w=>'<span class="tag">'+esc(w)+'</span>').join('')+
+    (p.length>60?'<span class="tag" style="opacity:.6">…等 '+p.length+' 个</span>':'');
+}
+
+/* ---------------- 计时器 ---------------- */
+let raf=null;
+function cancelTimer(){ if(raf) cancelAnimationFrame(raf); raf=null; state.timer=null; }
+function runTimer(total,onTick,onEnd){
+  cancelTimer();
+  state.wordsPaused=false;
+  state.timer={total,remain:total,end:performance.now()+total*1000,onTick,onEnd,paused:false,last:Math.ceil(total)};
+  loop();
+}
+function loop(){
+  const t=state.timer; if(!t||t.paused) return;
+  const left=Math.max(0,(t.end-performance.now())/1000);
+  t.remain=left;
+  const sec=Math.ceil(left);
+  if(sec!==t.last){ t.last=sec; if(sec<=10&&sec>0) SFX.tick(); }
+  t.onTick(left);
+  if(left<=0){ const e=t.onEnd; cancelTimer(); e&&e(); return; }
+  raf=requestAnimationFrame(loop);
+}
+function setRing(el,left,total){
+  const C=358.14;
+  el.setAttribute('stroke-dashoffset', (C*(1-clamp(left/total,0,1))).toFixed(2));
+}
+
+/* ---------------- 主流程 ---------------- */
+function startMatch(){
+  const p=poolWords();
+  if(!p.length){ toast('词库为空，请先选择分类或填写自定义词'); $('#customWords').focus(); return; }
+  if(confirm('确认开始比赛？\n共 '+state.teams.length+' 组，每组 '+state.settings.duration+' 秒，每组最多跳过 '+state.settings.maxSkip+' 次。')){
+    const first=state.teams.findIndex(t=>!t.played);
+    if(first<0){ show('s-board'); return; }
+    readyTeam(first);
+  }
+}
+function readyTeam(idx){
+  state.round={ idx, deck:shuffle(poolWords()), i:0, score:0, skip:0, foul:0, history:[], total:state.settings.duration };
+  $('#ovReadyTeam').textContent = state.teams[idx].name + ' 请上场';
+  $('#ovReadyTip').innerHTML = 'A 看屏幕表演 · B 背对屏幕猜词<br>倒计时 '+state.settings.duration+' 秒，结束自动出成绩';
+  $('#ovReady').classList.add('show');
+  let n=3; $('#ovReadyNum').textContent=n;
+  SFX.start();
+  const iv=setInterval(()=>{
+    n--; if(n>0){ $('#ovReadyNum').textContent=n; SFX.tick(); }
+    else{ clearInterval(iv); $('#ovReadyNum').textContent='开始!';
+      setTimeout(()=>{ $('#ovReady').classList.remove('show'); startRound(); },520); }
+  },800);
+}
+function startRound(){
+  const r=state.round;
+  r.elapsed=0; r.i=0; r.score=0; r.skip=0; r.foul=0; r.history=[]; r.deck=shuffle(poolWords());
+  $('#gTeamName').textContent=state.teams[r.idx].name;
+  $('#gScore').textContent=0; $('#gSkip').textContent=0; $('#gFoul').textContent=0;
+  $('#btnSkip').disabled=false;
+  updateSkipSub();
+  nextWord(true);
+  show('s-game');
+  runTimer(r.total, gameTick, ()=>endRound(false));
+}
+function gameTick(left){
+  const t=state.round.total;
+  state.round.elapsed = t-left;
+  setRing($('#gRingFg'),left,t);
+  $('#gTime').textContent=Math.ceil(left);
+  const fg=$('#gRingFg'), wrap=$('#ringWrap');
+  fg.classList.toggle('warn', left<=t*0.25 && left>10);
+  fg.classList.toggle('danger', left<=10);
+  wrap.classList.toggle('danger', left<=10);
+}
+function nextWord(first){
+  const r=state.round;
+  if(r.i>=r.deck.length){ r.deck=r.deck.concat(shuffle(poolWords())); }
+  r.current=r.deck[r.i];
+  const w=$('#gWord');
+  w.textContent=r.current; w.classList.remove('flip'); void w.offsetWidth; w.classList.add('flip');
+  $('#wIdx').textContent='第 '+(r.i+1)+' 词';
+  $('#wDeck').textContent='词库剩余可抽 '+(r.deck.length-r.i-1)+' 词 · 已出 '+r.i+' 词';
+  $('#wHint').textContent = first ? 'A 同事请看词表演，B 同事请背对屏幕' : pickHint();
+}
+function pickHint(){
+  const hs=['A 同事请看词表演，B 同事请背对屏幕','只许肢体与表情，不许出声','记住：口型与谐音都算犯规'];
+  return hs[Math.floor(Math.random()*hs.length)];
+}
+function updateSkipSub(){
+  const left=state.settings.maxSkip-state.round.skip;
+  $('#skipSub').textContent='跳过 · 剩余 '+Math.max(0,left)+' 次';
+  $('#btnSkip').disabled = left<=0;
+}
+function act(kind){
+  const r=state.round; if(!r||!state.timer) return;
+  const btn = kind==='correct'?$('#btnCorrect'):kind==='skip'?$('#btnSkip'):$('#btnFoul');
+  btn.classList.remove('hit'); void btn.offsetWidth; btn.classList.add('hit');
+  if(kind==='correct'){
+    r.score++; r.history.push({w:r.current,r:'ok'});
+    $('#gScore').textContent=r.score; SFX.correct(); burst();
+  }else if(kind==='skip'){
+    if(r.skip>=state.settings.maxSkip){ toast('跳过次数已用完！'); SFX.foul(); return; }
+    r.skip++; r.history.push({w:r.current,r:'skip'});
+    $('#gSkip').textContent=r.skip; SFX.skip(); updateSkipSub();
+  }else{
+    r.foul++; r.history.push({w:r.current,r:'foul'});
+    $('#gFoul').textContent=r.foul; SFX.foul(); toast('本词作废，强制切词');
+  }
+  r.i++; nextWord(false);
+}
+function togglePause(){
+  const t=state.timer; if(!t) return;
+  if(t.paused){ t.paused=false; t.end=performance.now()+t.remain*1000; loop(); $('#ovPause').classList.remove('show'); }
+  else{ t.paused=true; t.remain=Math.max(0,(t.end-performance.now())/1000); if(raf)cancelAnimationFrame(raf); $('#ovPause').classList.add('show'); }
+}
+function endRound(manual){
+  const r=state.round; if(!r) return;
+  if(state.timer) r.elapsed = r.total - state.timer.remain;
+  r.elapsed = clamp(r.elapsed||0, 0, r.total);
+  cancelTimer();
+  const team=state.teams[r.idx];
+  team.score=r.score; team.skip=r.skip; team.foul=r.foul; team.history=r.history.slice(); team.played=true;
+  saveSettings();
+  SFX.over();
+  $('#ovEndTitle').textContent = manual?'本组挑战结束':'时间到！';
+  $('#ovEndNum').textContent=r.score;
+  $('#ovEndTip').innerHTML='猜对 '+r.score+' 词 · 跳过 '+r.skip+' 次 · 违规 '+r.foul+' 次'+
+    '<br>正确率 '+acc(r.score,r.skip,r.foul)+'%';
+  $('#ovEnd').classList.add('show');
+  fillResult(r);
+}
+function closeEndOv(){ $('#ovEnd').classList.remove('show'); show('s-result'); }
+const acc=(s,k,f)=>{ const t=s+k+f; return t?Math.round(s/t*100):0; };
+
+function fillResult(r){
+  const team=state.teams[r.idx];
+  $('#rTeam').textContent=team.name;
+  $('#rTeamSub').textContent='RESULT · '+state.settings.duration+' 秒挑战';
+  $('#rMeta').textContent='共出词 '+(r.history.length)+' 个 · 用时 '+fmtTime(r.elapsed||0)+' · 词库随机不重复抽题';
+  $('#rScore').textContent=r.score; $('#rSkip').textContent=r.skip; $('#rFoul').textContent=r.foul;
+  $('#rAcc').textContent=acc(r.score,r.skip,r.foul)+'%';
+  const best=$('#rBest');
+  const done=state.teams.filter(t=>t.played);
+  const top=Math.max(...done.map(t=>t.score));
+  if(r.score>0 && r.score===top){ best.className='notice ok'; best.textContent='🏮 暂列全场第一（'+r.score+' 词），保持住！'; }
+  else{ best.className='notice ok'; best.textContent='当前全场最高 '+top+' 词，本组 '+r.score+' 词。'; }
+  $('#rHistory').innerHTML = r.history.length ? r.history.map(h=>{
+    const c=h.r==='ok'?'ok':h.r==='skip'?'skip':'foul';
+    const mark=h.r==='ok'?'✓':h.r==='skip'?'—':'✕';
+    return '<span class="hchip '+c+'">'+mark+' '+esc(h.w)+'</span>';
+  }).join('') : '<span style="color:var(--ink3)">本轮没有记录</span>';
+}
+const fmtTime=s=>{ s=Math.max(0,Math.round(s)); return Math.floor(s/60)+' 分 '+(s%60)+' 秒'; };
+
+function nextTeam(){
+  const i=state.teams.findIndex(t=>!t.played);
+  if(i<0){ toast('所有小组已完成挑战'); renderBoard(); show('s-board'); return; }
+  readyTeam(i);
+}
+function replayTeam(){
+  const r=state.round; if(!r) return;
+  const t=state.teams[r.idx];
+  t.score=0;t.skip=0;t.foul=0;t.history=[];t.played=false;
+  saveSettings(); renderTeams(); readyTeam(r.idx);
+}
+
+/* ---------------- 龙虎榜 ---------------- */
+function ranked(){
+  return state.teams.map((t,i)=>({...t,i}))
+    .sort((a,b)=> b.score-a.score || a.foul-b.foul || a.skip-b.skip || a.i-b.i);
+}
+function renderBoard(){
+  const list=ranked();
+  const tb=$('#boardBody'); tb.innerHTML='';
+  list.forEach((t,k)=>{
+    const rank=k+1;
+    const seal = rank===1?'<span class="seal">冠</span>':rank===2?'<span class="seal jade">亚</span>':
+      rank===3?'<span class="seal gold">季</span>':'<span class="seal gray">'+rank+'</span>';
+    const cls = rank===1?'top1':rank===2?'top2':rank===3?'top3':'';
+    const done = t.played;
+    tb.innerHTML += '<tr class="'+cls+'"><td>'+seal+'</td><td style="letter-spacing:.1em">'+esc(t.name)+
+      (t.advanced?'<span class="badge">晋级</span>':'')+'</td><td><b style="font-size:17px;color:var(--jade)">'+t.score+'</b></td>'+
+      '<td>'+t.skip+'</td><td>'+t.foul+'</td><td>'+(done?acc(t.score,t.skip,t.foul)+'%':'—')+'</td>'+
+      '<td style="font-size:12px;color:'+(done?'var(--jade)':'var(--ink3)')+'">'+(done?'已完成':'待上场')+'</td></tr>';
+  });
+  const unplayed=state.teams.filter(t=>!t.played).length;
+  $('#btnContinue').classList.toggle('hide', unplayed===0);
+  let msg='';
+  const allDone = unplayed===0;
+  if(allDone){
+    const a=list[2], b=list[3];
+    if(b && a.score===b.score){
+      msg='<div class="notice">⚔ 第 3 名「'+esc(a.name)+'」与第 4 名「'+esc(b.name)+'」同为 '+a.score+' 分，打平了！请派代表上来进行「黄金 '+state.settings.otDuration+' 秒生死战」，谁先喊出正确答案谁晋级前三。</div>';
+    }else{
+      msg='<div class="notice ok">🏮 恭喜前三名：<b>'+list.slice(0,Math.min(3,list.length)).map(t=>esc(t.name)).join(' · ')+'</b>，赢得精美奖品！</div>';
+    }
+  }else{
+    msg='<div class="notice ok">还有 '+unplayed+' 组未上场，继续加油！</div>';
+  }
+  $('#boardMsg').innerHTML=msg;
+  renderTeams();
+}
+function exportCSV(){
+  const rows=[['名次','小组','猜对','跳过','违规','正确率','状态']];
+  ranked().forEach((t,k)=>rows.push([k+1,t.name,t.score,t.skip,t.foul,t.played?acc(t.score,t.skip,t.foul)+'%':'—',t.played?'已完成':'待上场']));
+  const csv='\ufeff'+rows.map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='心有灵犀_成绩榜.csv'; a.click();
+  toast('成绩已导出');
+}
+
+/* ---------------- 加时赛 ---------------- */
+function goOvertime(){
+  const opts=state.teams.map((t,i)=>'<option value="'+i+'">'+esc(t.name)+'（'+t.score+' 分）</option>').join('');
+  $('#otTeamA').innerHTML=opts; $('#otTeamB').innerHTML=opts;
+  const list=ranked();
+  if(list[2]&&list[3]&&list[2].score===list[3].score){
+    $('#otTeamA').value=list[2].i; $('#otTeamB').value=list[3].i;
+  }else if(list.length>1){ $('#otTeamA').value=list[0].i; $('#otTeamB').value=list[1].i; }
+  setOtMode(state.ot?state.ot.mode:'duel');
+  show('s-overtime');
+}
+function setOtMode(m){
+  state.otMode=m;
+  $('#mcDuel').classList.toggle('on',m==='duel');
+  $('#mcExt').classList.toggle('on',m==='ext');
+  $('#otWrapB').classList.toggle('hide',m!=='duel');
+  $('#otWrapExt').classList.toggle('hide',m!=='ext');
+  $('#otLblA').textContent = m==='duel'?'出战小组 A':'加时小组';
+  $('#otSub').textContent = m==='duel'?'黄金 '+state.settings.otDuration+' 秒生死战':'加时续命挑战';
+  SFX.click();
+}
+function startOvertime(){
+  const dur = state.otMode==='ext' ? clamp(+$('#otTimeInput').value||30,10,120) : state.settings.otDuration;
+  const a=+$('#otTeamA').value, b=+$('#otTeamB').value;
+  if(state.otMode==='duel' && a===b){ toast('请选择两个不同的小组'); return; }
+  const pool=poolWords();
+  if(!pool.length){ toast('词库为空'); return; }
+  state.ot={ mode:state.otMode, dur, a, b, deck:shuffle(pool), i:0, sa:0, sb:0, skip:0, foul:0, sudden:false, history:[] };
+  $('#otSetup').classList.add('hide'); $('#otConfig').classList.add('hide'); $('#otStartWrap').classList.add('hide');
+  $('#otPlay').classList.remove('hide');
+  $('#otDuel').classList.toggle('hide', state.otMode!=='duel');
+  $('#otExt').classList.toggle('hide', state.otMode!=='ext');
+  $('#otNameA').textContent=state.teams[a].name;
+  $('#otNameB').textContent=state.teams[b].name;
+  $('#otScoreA').textContent=0; $('#otScoreB').textContent=0;
+  $('#otSkipSub').textContent='跳过 · 剩余 '+state.settings.maxSkip+' 次';
+  otNextWord(true);
+  SFX.start();
+  runTimer(dur, otTick, otTimeUp);
+}
+function otTick(left){
+  const t=state.ot.dur;
+  setRing($('#otRingFg'),left,t);
+  $('#otTime').textContent=Math.ceil(left);
+  const fg=$('#otRingFg'), w=$('#otRingWrap');
+  fg.classList.toggle('warn', left<=t*0.34 && left>10);
+  fg.classList.toggle('danger', left<=10);
+  w.classList.toggle('danger', left<=10);
+}
+function otNextWord(first){
+  const o=state.ot;
+  if(o.i>=o.deck.length) o.deck=o.deck.concat(shuffle(poolWords()));
+  o.current=o.deck[o.i];
+  const w=$('#otWord'); w.textContent=o.current; w.classList.remove('flip'); void w.offsetWidth; w.classList.add('flip');
+  $('#otIdx').textContent = o.sudden ? '突然死亡 · 一词定胜负！' : ('第 '+(o.i+1)+' 词 · 抢答');
+}
+function otAnswer(side){
+  const o=state.ot; if(!o||o.mode!=='duel') return;
+  if(o.sudden){ otFinish(side,'突然死亡抢答成功'); return; }
+  if(side==='A'){ o.sa++; $('#otScoreA').textContent=o.sa; } else { o.sb++; $('#otScoreB').textContent=o.sb; }
+  o.history.push({w:o.current, side});
+  SFX.correct(); burst();
+  o.i++; otNextWord(false);
+}
+function otExtAct(kind){
+  const o=state.ot; if(!o||o.mode!=='ext') return;
+  const team=state.teams[o.a];
+  if(kind==='correct'){ o.sa++; $('#otScoreA').textContent=o.sa; SFX.correct(); burst(); }
+  else if(kind==='skip'){
+    if(o.skip>=state.settings.maxSkip){ toast('跳过次数已用完！'); return; }
+    o.skip++; SFX.skip(); $('#otSkipSub').textContent='跳过 · 剩余 '+(state.settings.maxSkip-o.skip)+' 次';
+  } else { o.foul++; SFX.foul(); toast('本词作废'); }
+  o.history.push({w:o.current, kind});
+  o.i++; otNextWord(false);
+}
+function otTimeUp(){
+  const o=state.ot;
+  if(o.mode==='ext'){ otFinishExt(); return; }
+  if(o.sa===o.sb){
+    o.sudden=true; $('#otIdx').textContent='突然死亡 · 一词定胜负！';
+    $('#otTime').textContent='∞';
+    toast('打平！进入突然死亡，先抢答者晋级');
+    o.i++; otNextWord(false);
+    return;
+  }
+  otFinish(o.sa>o.sb?'A':'B','时间到');
+}
+function otFinish(side,why){
+  cancelTimer();
+  const o=state.ot;
+  const win  = side==='A'? o.a : o.b;
+  const lose = side==='A'? o.b : o.a;
+  state.teams[win].advanced=true;
+  state.teams[lose].advanced=false;
+  saveSettings(); SFX.win();
+  $('#ovOtTitle').textContent='加时赛结束 · '+why;
+  $('#ovOtNum').textContent = state.teams[win].name.length>4 ? '胜' : '晋';
+  $('#ovOtNum').style.fontSize='66px';
+  $('#ovOtTip').innerHTML='<b style="font-size:19px;color:var(--red)">'+esc(state.teams[win].name)+'</b> 晋级前三！<br>'+
+    esc(state.teams[o.a].name)+' '+o.sa+' ： '+o.sb+' '+esc(state.teams[o.b].name);
+  $('#ovOtAgain').textContent='再来一局';
+  $('#ovOtEnd').classList.add('show');
+  renderBoard();
+}
+function otFinishExt(){
+  cancelTimer();
+  const o=state.ot, team=state.teams[o.a];
+  team.score += o.sa; team.skip += o.skip; team.foul += o.foul;
+  team.history = team.history.concat(o.history.map(h=>({w:h.w, r:h.kind==='correct'?'ok':h.kind==='skip'?'skip':'foul'})));
+  team.played=true; saveSettings(); SFX.win();
+  $('#ovOtTitle').textContent='加时续命结束';
+  $('#ovOtNum').textContent='+'+o.sa;
+  $('#ovOtNum').style.fontSize='66px';
+  $('#ovOtTip').innerHTML=esc(team.name)+' 加时猜对 '+o.sa+' 词，跳过 '+o.skip+' 次，违规 '+o.foul+' 次<br>累计总分：<b style="font-size:18px;color:var(--red)">'+team.score+' 分</b>';
+  $('#ovOtAgain').textContent='再加一轮';
+  $('#ovOtEnd').classList.add('show');
+  renderBoard();
+}
+function otAgain(){ $('#ovOtEnd').classList.remove('show'); goOvertime(); }
+function otQuit(){
+  cancelTimer();
+  $('#otPlay').classList.add('hide');
+  $('#otSetup').classList.remove('hide'); $('#otConfig').classList.remove('hide'); $('#otStartWrap').classList.remove('hide');
+  toast('已终止加时赛');
+}
+
+/* ---------------- 键盘 ---------------- */
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  const k=e.key;
+  if(state.screen==='s-game' && state.timer){
+    if(k===' '||k==='Enter'||k==='ArrowRight'){ e.preventDefault(); act('correct'); }
+    else if(k==='p'||k==='P'){ act('skip'); }
+    else if(k==='x'||k==='X'){ act('foul'); }
+    else if(k==='Escape'){ togglePause(); }
+  }else if(state.screen==='s-overtime' && state.ot && state.timer){
+    if(state.ot.mode==='duel'){
+      if(k==='ArrowLeft'){ otAnswer('A'); } else if(k==='ArrowRight'){ otAnswer('B'); }
+    }else{
+      if(k===' '||k==='Enter'){ e.preventDefault(); otExtAct('correct'); }
+      else if(k==='p'||k==='P'){ otExtAct('skip'); }
+      else if(k==='x'||k==='X'){ otExtAct('foul'); }
+    }
+  }
+});
+
+/* ---------------- 视觉装饰 ---------------- */
+function plantOsmanthus(){
+  const g=$('#osmanthus'); if(!g) return;
+  g.setAttribute('transform','translate(120,430) scale(1.15)');
+  let html='';
+  ['trunk','br1','br2','br3','br4','br5','br6'].forEach(id=>{
+    const p=document.getElementById(id); if(!p||!p.getTotalLength) return;
+    const L=p.getTotalLength(); const n=Math.max(4,Math.round(L/9));
+    for(let i=0;i<n;i++){
+      const pt=p.getPointAtLength(Math.random()*L);
+      const k=1+Math.floor(Math.random()*3);
+      for(let j=0;j<k;j++){
+        const x=pt.x+(Math.random()-.5)*14, y=pt.y+(Math.random()-.5)*14;
+        html+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(1.5+Math.random()*2).toFixed(1)+
+              '" fill="#e0b84a" opacity="'+(.45+Math.random()*.45).toFixed(2)+'"/>';
+      }
+    }
+  });
+  g.innerHTML=html;
+}
+function makePetals(){
+  const box=$('#petals'); if(!box) return;
+  let html='';
+  for(let i=0;i<22;i++){
+    html+='<div class="petal" style="left:'+(Math.random()*100).toFixed(1)+'vw;'+
+      'animation-duration:'+(11+Math.random()*14).toFixed(1)+'s;'+
+      'animation-delay:-'+(Math.random()*20).toFixed(1)+'s;'+
+      'transform:scale('+(.6+Math.random()*.9).toFixed(2)+')"></div>';
+  }
+  box.innerHTML=html;
+}
+function burst(){
+  const box=$('#petals'); if(!box) return;
+  for(let i=0;i<16;i++){
+    const d=document.createElement('div');
+    d.className='petal';
+    d.style.cssText='left:'+(18+Math.random()*64)+'vw;z-index:20;animation-duration:'+(2.2+Math.random()*1.6).toFixed(1)+
+      's;animation-delay:0s;transform:scale('+(.8+Math.random()*.9).toFixed(2)+')';
+    box.appendChild(d);
+    setTimeout(()=>d.remove(),4200);
+  }
+}
+
+/* ---------------- 初始化 ---------------- */
+function init(){
+  loadSaved();
+  renderCats(); renderTeams(); updatePool();
+  $('#soundBtn').textContent = state.settings.sound ? '🔔 音效：开' : '🔕 音效：关';
+  $('#customWords').addEventListener('input',saveSettings);
+  $('#duration').addEventListener('change',saveSettings);
+  $('#maxSkip').addEventListener('change',saveSettings);
+  $('#otDuration').addEventListener('change',()=>{ saveSettings(); $('#otTimeInput').value=state.settings.otDuration; });
+  $('#fileInput').addEventListener('change',e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=()=>{ const txt=String(rd.result||'');
+      const add=parseCustom(txt).join('\n');
+      const cur=$('#customWords').value.trim();
+      $('#customWords').value = cur ? cur+'\n'+add : add;
+      saveSettings(); toast('已导入 '+parseCustom(txt).length+' 个词'); };
+    rd.readAsText(f,'utf-8'); e.target.value='';
+  });
+  const st=document.createElement('style');
+  st.textContent='@keyframes earT{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}55%{transform:rotate(3deg)}}'+
+    '#rabbitEar{transform-origin:97px 72px;animation:earT 5.5s ease-in-out infinite}';
+  document.head.appendChild(st);
+  plantOsmanthus(); makePetals();
+}
+init();
 </script>
 </body>
 </html>
