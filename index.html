@@ -519,7 +519,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
       <div class="teams" id="teamsGrid"></div>
       <div class="row" style="justify-content:center;margin-top:18px">
         <button class="btn ghost sm" onclick="addTeam()">＋ 增加一组</button>
-        <button class="btn ghost sm" onclick="resetAll()">重置全部数据</button>
+        <button class="btn ghost sm" onclick="resetAll()" title="仅清空各组成绩与记录，词库设置不受影响">重置小组成绩</button>
       </div>
     </div>
 
@@ -993,14 +993,19 @@ function toggleSound(){
   $('#soundBtn').textContent = state.settings.sound ? '🔔 音效：开' : '🔕 音效：关';
   if(state.settings.sound) SFX.click(); saveSettings();
 }
+/* 仅重置「参赛小组」的成绩与记录：
+   清空 —— 各组得分、跳过数、违规数、词表回放、已挑战 / 晋级标记
+   保留 —— 小组名称与组数、赛制设置（时长 / 跳过上限 / 加时 / 音效）、游戏词库（分类勾选 + 自定义词） */
 function resetAll(){
-  if(!confirm('确定清空所有成绩与设置，重新开始吗？')) return;
-  localStorage.removeItem('xylx_v1');
-  state.settings={...DEF.settings, cats:[...DEF.settings.cats], custom:''};
-  state.teams=['第一组','第二组','第三组','第四组','第五组'].map(n=>({name:n,score:0,skip:0,foul:0,played:false,history:[],advanced:false}));
-  $('#duration').value=120; $('#maxSkip').value=3; $('#otDuration').value=30; $('#customWords').value='';
-  $('#soundBtn').textContent='🔔 音效：开';
-  renderCats(); renderTeams(); updatePool(); toast('已重置');
+  if(!confirm('确定清空所有小组的成绩与记录吗？\n\n· 清空：各组成绩、跳过 / 违规数、词表回放、晋级标记\n· 保留：小组名称与组数、赛制设置、游戏词库设置')) return;
+  state.teams.forEach(t=>{
+    t.score=0; t.skip=0; t.foul=0; t.played=false; t.history=[]; t.advanced=false;
+  });
+  state.round=null; state.ot=null;
+  renderTeams();
+  if(state.screen==='s-board') renderBoard();
+  saveSettings();
+  toast('已重置各组成绩 · 词库设置未改动');
 }
 function selectAllCats(on){ state.settings.cats = on?Object.keys(CATS):[]; renderCats(); saveSettings(); }
 function fillDemo(){ $('#customWords').value = DEMO_CUSTOM; saveSettings(); toast('已载入示例词'); }
@@ -1336,11 +1341,17 @@ function otFinish(side,why){
   state.teams[win].advanced=true;
   state.teams[lose].advanced=false;
   saveSettings(); SFX.win();
+  const winName=state.teams[win].name;
   $('#ovOtTitle').textContent='加时赛结束 · '+why;
-  $('#ovOtNum').textContent = state.teams[win].name.length>4 ? '胜' : '晋';
-  $('#ovOtNum').style.fontSize='66px';
-  $('#ovOtTip').innerHTML='<b style="font-size:19px;color:var(--red)">'+esc(state.teams[win].name)+'</b> 晋级前三！<br>'+
-    esc(state.teams[o.a].name)+' '+o.sa+' ： '+o.sb+' '+esc(state.teams[o.b].name);
+  /* 获胜组名居中大字展示，替代原来的「晋 / 胜」单字 */
+  const n=winName.length;
+  $('#ovOtNum').textContent=winName;
+  $('#ovOtNum').style.fontSize = n<=4?'58px':(n<=6?'46px':'36px');
+  $('#ovOtNum').style.letterSpacing='.1em';
+  $('#ovOtTip').innerHTML='恭喜晋级前三！<br>'+
+    '<b style="font-size:18px;color:var(--ink)">'+esc(state.teams[o.a].name)+'</b> '+o.sa+
+    ' <span style="color:var(--gold)">:</span> '+o.sb+
+    ' <b style="font-size:18px;color:var(--ink)">'+esc(state.teams[o.b].name)+'</b>';
   $('#ovOtAgain').textContent='再来一局';
   $('#ovOtBoard').textContent = state.otBack==='s-result' ? '返回成绩单' : '返回龙虎榜';
   $('#ovOtEnd').classList.add('show');
