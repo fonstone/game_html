@@ -364,6 +364,20 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 .stamp span{width:50%;text-align:center}
 .foot{text-align:center;margin-top:28px;font-size:14px;letter-spacing:.22em;color:var(--ink3)}
 
+/* 首页底部行动区：榜单 · 分隔 · 开赛，居中对称 */
+.homeAct{text-align:center;margin-top:10px}
+.homeAct .actBtn{font-size:19px;padding:14px 34px;letter-spacing:.24em;font-weight:600;
+  -webkit-text-stroke:.28px currentColor;vertical-align:middle}
+.homeAct .actSep{display:inline-block;width:1px;height:34px;margin:0 20px;vertical-align:middle;
+  background:linear-gradient(180deg,transparent,rgba(195,154,43,.7),transparent)}
+.homeAct .btn.big{vertical-align:middle}
+.homeAct .foot{margin-top:22px}
+@media(max-width:720px){
+  .homeAct .actSep{display:none}
+  .homeAct .actBtn,.homeAct .btn.big{display:block;width:min(340px,88vw);margin:0 auto}
+  .homeAct .btn.big{margin-top:14px}
+}
+
 .hide{display:none!important}
 .toast{position:fixed;left:50%;bottom:46px;transform:translateX(-50%) translateY(20px);z-index:60;
   background:rgba(51,64,58,.94);color:#f7f1e5;font-size:15px;letter-spacing:.14em;padding:13px 28px;
@@ -506,7 +520,7 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
       <path d="M22 30 c-7 0-9 7-4 10 c3 2 7 0 6.5-3.5" fill="none" stroke="#2f5b4d" stroke-width="1.4" stroke-opacity=".55"/>
     </svg>
     <h1>心<em>有</em>灵<em>犀</em></h1>
-    <div class="sub">双人猜词挑战赛 · 两分钟 · 默契对决</div>
+    <div class="sub">双人猜词挑战赛 · 默契对决</div>
     <div class="rule"></div>
   </header>
 
@@ -599,7 +613,9 @@ table.board tr.top3 td{background:rgba(180,50,44,.08)}
 
     <div class="divider"><i></i><b></b><i></i></div>
 
-    <div style="text-align:center;margin-top:8px">
+    <div class="homeAct">
+      <button class="btn gold actBtn" onclick="show('s-board')">查 看 龙 虎 榜</button>
+      <span class="actSep"></span>
       <button class="btn red big" onclick="startMatch()">开 始 比 赛</button>
       <div class="foot">按抽签顺序依次上场 · 每组一次挑战机会 · 前 3 名获胜</div>
     </div>
@@ -1021,6 +1037,18 @@ function poolWords(){
   w=w.concat(parseCustom(state.settings.custom));
   return Array.from(new Set(w.filter(Boolean)));
 }
+/* 补题：只从「本轮尚未出现过的词」里洗牌补充，抽完返回空数组
+   —— 保证单组挑战（及加时赛）全程不出现重复词 */
+function refillDeck(used){
+  const rest = poolWords().filter(w=>!(used && used.has(w)));
+  return rest.length ? shuffle(rest) : [];
+}
+/* 记录已出过的词，兼容旧存档没有 used 字段的情况 */
+function markUsed(r){
+  if(!r) return;
+  if(!(r.used instanceof Set)) r.used = new Set(r.used||[]);
+  if(r.current) r.used.add(r.current);
+}
 function updatePool(){
   const p=poolWords();
   $('#wordCount').textContent='当前词库共 '+p.length+' 个词'+(p.length?'':'（请至少添加 1 个词）');
@@ -1074,7 +1102,7 @@ function startMatch(){
   }
 }
 function readyTeam(idx){
-  state.round={ idx, deck:shuffle(poolWords()), i:0, score:0, skip:0, foul:0, history:[], total:state.settings.duration };
+  state.round={ idx, deck:shuffle(poolWords()), used:new Set(), i:0, score:0, skip:0, foul:0, history:[], total:state.settings.duration };
   $('#ovReadyTeam').textContent = state.teams[idx].name + ' 请上场';
   $('#ovReadyTip').innerHTML = 'A 看屏幕表演 · B 背对屏幕猜词<br>倒计时 '+state.settings.duration+' 秒，结束自动出成绩';
   $('#ovReady').classList.add('show');
@@ -1088,7 +1116,10 @@ function readyTeam(idx){
 }
 function startRound(){
   const r=state.round;
-  r.elapsed=0; r.i=0; r.score=0; r.skip=0; r.foul=0; r.history=[]; r.deck=shuffle(poolWords());
+  const pool=poolWords();
+  if(!pool.length){ toast('词库为空，请先到词库设置添加词语'); cancelTimer(); show('s-setup'); return; }
+  r.elapsed=0; r.i=0; r.score=0; r.skip=0; r.foul=0; r.history=[];
+  r.deck=shuffle(pool); r.used=new Set();
   $('#gTeamName').textContent=state.teams[r.idx].name;
   $('#gScore').textContent=0; $('#gSkip').textContent=0; $('#gFoul').textContent=0;
   $('#btnSkip').disabled=false;
@@ -1109,12 +1140,22 @@ function gameTick(left){
 }
 function nextWord(first){
   const r=state.round;
-  if(r.i>=r.deck.length){ r.deck=r.deck.concat(shuffle(poolWords())); }
+  if(r.i>=r.deck.length){
+    /* 题签见底：只补充本轮没出过的词；若整库都已出过则本组提前结束，绝不重复出题 */
+    const more=refillDeck(r.used);
+    if(!more.length){
+      toast('词库 '+poolWords().length+' 个词已全部出完，本组提前结束');
+      endRound(true);
+      return;
+    }
+    r.deck=r.deck.concat(more);
+  }
   r.current=r.deck[r.i];
+  markUsed(r);
   const w=$('#gWord');
   w.textContent=r.current; w.classList.remove('flip'); void w.offsetWidth; w.classList.add('flip');
   $('#wIdx').textContent='第 '+(r.i+1)+' 词';
-  $('#wDeck').textContent='词库剩余可抽 '+(r.deck.length-r.i-1)+' 词 · 已出 '+r.i+' 词';
+  $('#wDeck').textContent='本组已出 '+r.i+' 词 · 剩余可抽 '+(r.deck.length-r.i-1)+' 词 · 全程不重复';
   $('#wHint').textContent = first ? 'A 同事请看词表演，B 同事请背对屏幕' : pickHint();
 }
 function pickHint(){
@@ -1219,9 +1260,14 @@ function renderBoard(){
       '<td style="font-size:12px;color:'+(done?'var(--jade)':'var(--ink3)')+'">'+(done?'已完成':'待上场')+'</td></tr>';
   });
   const unplayed=state.teams.filter(t=>!t.played).length;
+  const started = state.teams.some(t=>t.played);
   $('#btnContinue').classList.toggle('hide', unplayed===0);
+  $('#btnContinue').textContent = started ? '继续下一组' : '开 始 比 赛';
   let msg='';
   const allDone = unplayed===0;
+  if(!started){
+    msg='<div class="notice ok">🏮 比赛尚未开始，当前为各组初始排名。点击「开 始 比 赛」上场挑战。</div>';
+  }
   if(allDone){
     const a=list[2], b=list[3];
     if(b && a.score===b.score){
@@ -1229,7 +1275,7 @@ function renderBoard(){
     }else{
       msg='<div class="notice ok">🏮 恭喜前三名：<b>'+list.slice(0,Math.min(3,list.length)).map(t=>esc(t.name)).join(' · ')+'</b>，赢得精美奖品！</div>';
     }
-  }else{
+  }else if(started){
     msg='<div class="notice ok">还有 '+unplayed+' 组未上场，继续加油！</div>';
   }
   $('#boardMsg').innerHTML=msg;
@@ -1273,7 +1319,7 @@ function startOvertime(){
   if(state.otMode==='duel' && a===b){ toast('请选择两个不同的小组'); return; }
   const pool=poolWords();
   if(!pool.length){ toast('词库为空'); return; }
-  state.ot={ mode:state.otMode, dur, a, b, deck:shuffle(pool), i:0, sa:0, sb:0, skip:0, foul:0, sudden:false, history:[] };
+  state.ot={ mode:state.otMode, dur, a, b, deck:shuffle(pool), used:new Set(), i:0, sa:0, sb:0, skip:0, foul:0, sudden:false, history:[] };
   $('#otSetup').classList.add('hide'); $('#otConfig').classList.add('hide'); $('#otStartWrap').classList.add('hide');
   $('#otPlay').classList.remove('hide');
   $('#otDuel').classList.toggle('hide', state.otMode!=='duel');
@@ -1297,8 +1343,13 @@ function otTick(left){
 }
 function otNextWord(first){
   const o=state.ot;
-  if(o.i>=o.deck.length) o.deck=o.deck.concat(shuffle(poolWords()));
+  if(o.i>=o.deck.length){
+    const more=refillDeck(o.used);
+    if(!more.length){ toast('词库已全部出完，加时赛结束'); otQuit(); return; }
+    o.deck=o.deck.concat(more);
+  }
   o.current=o.deck[o.i];
+  markUsed(o);
   const w=$('#otWord'); w.textContent=o.current; w.classList.remove('flip'); void w.offsetWidth; w.classList.add('flip');
   $('#otIdx').textContent = o.sudden ? '突然死亡 · 一词定胜负！' : ('第 '+(o.i+1)+' 词 · 抢答');
 }
